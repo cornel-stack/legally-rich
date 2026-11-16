@@ -66,6 +66,22 @@ export const SceneSchema = z.object({
   source: z.string().optional(),
   /** Visual beats anchored to narration words. */
   beats: z.array(BeatSchema).optional(),
+
+  /* ---- art direction (new hand-drawn style) ---- */
+  /** Tool/prop the presenter shows (credit-card, calendar, gauge, document, …). */
+  prop: z.string().optional(),
+  /** Numeric prop value (e.g. gauge 0..1). */
+  propValue: z.number().optional(),
+  /** Text shown on a prop (e.g. calendar day). */
+  propDay: z.string().optional(),
+  /** Stamp a red mark on a document prop. */
+  stamp: z.boolean().optional(),
+  /** Character pose: idle, point-right, hold-right, present, cheer, worried, shrug, walk. */
+  pose: z.string().optional(),
+  /** Character expression: neutral, happy, worried, shocked, sad. */
+  expression: z.string().optional(),
+  /** Special art mode for a scene (e.g. "stop-paying" intro). */
+  art: z.string().optional(),
 });
 export type Scene = z.infer<typeof SceneSchema>;
 

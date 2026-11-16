@@ -11,7 +11,7 @@
     {
       "id": "cold-open",
       "kind": "cold-open",
-      "headline": "$3,000",
+      "headline": "STOP PAYING?",
       "subhead": "What happens if you never pay?",
       "narration": "Three thousand dollars. One credit card. One missed payment. Most people believe that if they just stop paying and go quiet, the debt eventually disappears into thin air. And here is the strange part: they are actually half right. Under federal law, this debt really can fall off the record in exactly seven years. But the road to that day runs straight through late fees, a wrecked credit score, a courtroom, and your paycheck. And waiting at the very end is a trap almost nobody sees coming, one that can hand you a tax bill for money you never actually received. This is the entire timeline, day by day, with the real law on screen the whole way."
     },
@@ -20,7 +20,9 @@
       "kind": "title",
       "headline": "DAY 1 TO YEAR 7",
       "subhead": "One missed payment, start to finish.",
-      "narration": "Meet Jake. He owes three thousand dollars on a single credit card, and he has decided he is never going to pay it again. Every stage you are about to watch follows real United States law: the Fair Debt Collection Practices Act, the Fair Credit Reporting Act, and the Internal Revenue Code. We are going to put the actual statutes on the screen so you can read them yourself. Just know up front that this is educational, not legal advice, and the exact dollar figures here are one realistic example, not a promise."
+      "narration": "Meet Jake. He owes three thousand dollars on a single credit card, and he has decided he is never going to pay it again. Every stage you are about to watch follows real United States law: the Fair Debt Collection Practices Act, the Fair Credit Reporting Act, and the Internal Revenue Code. We are going to put the actual statutes on the screen so you can read them yourself. Just know up front that this is educational, not legal advice, and the exact dollar figures here are one realistic example, not a promise.",
+      "pose": "present",
+      "expression": "happy"
     },
     {
       "id": "day1",
@@ -30,7 +32,9 @@
       "citation": "Cardholder agreement",
       "ledger": 3000,
       "ledgerState": "red",
-      "narration": "Day one. Jake misses his minimum payment, and on the surface, absolutely nothing happens. No phone call. No letter. No knock at the door. But behind the scenes, a clock has started ticking. Interest keeps compounding on the full balance at his card's purchase rate, and the account is quietly flagged as past due inside the bank's system. Right now the three thousand dollars is still just three thousand dollars. It will not stay that way for long."
+      "narration": "Day one. Jake misses his minimum payment, and on the surface, absolutely nothing happens. No phone call. No letter. No knock at the door. But behind the scenes, a clock has started ticking. Interest keeps compounding on the full balance at his card's purchase rate, and the account is quietly flagged as past due inside the bank's system. Right now the three thousand dollars is still just three thousand dollars. It will not stay that way for long.",
+      "prop": "credit-card",
+      "expression": "worried"
     },
     {
       "id": "day30",
@@ -40,7 +44,10 @@
       "citation": "Reg Z, 12 C.F.R. 1026.52",
       "ledger": 3041,
       "ledgerState": "red",
-      "narration": "Day thirty. The first real consequence arrives: a late fee. Federal rules under Regulation Z let a card issuer charge a late fee that typically lands somewhere between thirty and forty-one dollars for a single missed payment. On top of that, most cardholder agreements let the bank switch on a penalty interest rate, often as high as twenty-nine point nine-nine percent, which now applies to the balance going forward. Jake's total ticks upward, and the interest that balance generates gets a little bigger every single month."
+      "narration": "Day thirty. The first real consequence arrives: a late fee. Federal rules under Regulation Z let a card issuer charge a late fee that typically lands somewhere between thirty and forty-one dollars for a single missed payment. On top of that, most cardholder agreements let the bank switch on a penalty interest rate, often as high as twenty-nine point nine-nine percent, which now applies to the balance going forward. Jake's total ticks upward, and the interest that balance generates gets a little bigger every single month.",
+      "prop": "gauge",
+      "propValue": 0.85,
+      "expression": "worried"
     },
     {
       "id": "day60",
@@ -50,7 +57,9 @@
       "citation": "FCRA, 15 U.S.C. 1681s-2",
       "ledger": 3090,
       "ledgerState": "red",
-      "narration": "Once that payment is a full thirty days late, the issuer reports it to the three major credit bureaus. This is the first black mark on Jake's file, and it is a heavy one. A single thirty-day-late notation can knock a good credit score down by anywhere from fifty to well over a hundred points, almost overnight. And that one invisible number quietly controls far more than loans. It touches his apartment applications, the price of his car insurance, his utility deposits, and sometimes even a job offer."
+      "narration": "Once that payment is a full thirty days late, the issuer reports it to the three major credit bureaus. This is the first black mark on Jake's file, and it is a heavy one. A single thirty-day-late notation can knock a good credit score down by anywhere from fifty to well over a hundred points, almost overnight. And that one invisible number quietly controls far more than loans. It touches his apartment applications, the price of his car insurance, his utility deposits, and sometimes even a job offer.",
+      "prop": "document",
+      "expression": "worried"
     },
     {
       "id": "doc-fdcpa",
@@ -73,7 +82,8 @@
           "action": "focus",
           "value": 1
         }
-      ]
+      ],
+      "expression": "neutral"
     },
     {
       "id": "harassment-limits",
@@ -83,7 +93,10 @@
       "citation": "15 U.S.C. 1692c and 1692d",
       "ledger": 3200,
       "ledgerState": "red",
-      "narration": "Now, the calls can feel relentless, but the same law puts the collector on a short leash. A debt collector cannot call Jake before eight in the morning or after nine at night. They cannot call him at work once he tells them his employer forbids it. They cannot threaten him with arrest, pretend to be a lawyer or the government, or use obscene language to frighten him. If he sends a single letter telling them to stop contacting him, they legally must, except to confirm there will be no more contact or to tell him they are suing. Most people never find out those rights exist."
+      "narration": "Now, the calls can feel relentless, but the same law puts the collector on a short leash. A debt collector cannot call Jake before eight in the morning or after nine at night. They cannot call him at work once he tells them his employer forbids it. They cannot threaten him with arrest, pretend to be a lawyer or the government, or use obscene language to frighten him. If he sends a single letter telling them to stop contacting him, they legally must, except to confirm there will be no more contact or to tell him they are suing. Most people never find out those rights exist.",
+      "prop": "shield",
+      "pose": "point-right",
+      "expression": "neutral"
     },
     {
       "id": "credit-cost",
@@ -93,7 +106,9 @@
       "citation": "Risk-based pricing",
       "ledger": 3300,
       "ledgerState": "red",
-      "narration": "And here is the cost almost nobody adds up. That wrecked credit score follows Jake into every financial decision for years. The next car loan comes with a double-digit interest rate instead of a low one. A mortgage, if he can get one at all, costs tens of thousands more over its life. Landlords quietly reject the application. The power company and the phone carrier demand hundreds of dollars in deposits. In many states, his car insurance premium goes up, purely because of the score. The three-thousand-dollar debt is almost the smallest number in this entire story."
+      "narration": "And here is the cost almost nobody adds up. That wrecked credit score follows Jake into every financial decision for years. The next car loan comes with a double-digit interest rate instead of a low one. A mortgage, if he can get one at all, costs tens of thousands more over its life. Landlords quietly reject the application. The power company and the phone carrier demand hundreds of dollars in deposits. In many states, his car insurance premium goes up, purely because of the score. The three-thousand-dollar debt is almost the smallest number in this entire story.",
+      "prop": "house",
+      "expression": "worried"
     },
     {
       "id": "day180",
@@ -103,7 +118,10 @@
       "citation": "OCC Uniform Retail Credit Classification",
       "ledger": 3300,
       "ledgerState": "red",
-      "narration": "Day one hundred and eighty. Six straight months of missed payments triggers what is called a charge-off, and this is the single most misunderstood word in the whole process. A charge-off does not mean the debt is forgiven, erased, or gone. It is purely an accounting event. The bank is simply declaring the loan a loss on its own internal books so it can clean up its balance sheet for regulators and claim a tax deduction of its own. Jake still owes every last dollar of it. And what the bank very often does next is sell that debt to someone else entirely."
+      "narration": "Day one hundred and eighty. Six straight months of missed payments triggers what is called a charge-off, and this is the single most misunderstood word in the whole process. A charge-off does not mean the debt is forgiven, erased, or gone. It is purely an accounting event. The bank is simply declaring the loan a loss on its own internal books so it can clean up its balance sheet for regulators and claim a tax deduction of its own. Jake still owes every last dollar of it. And what the bank very often does next is sell that debt to someone else entirely.",
+      "prop": "document",
+      "stamp": true,
+      "expression": "worried"
     },
     {
       "id": "debtbuyer",
@@ -113,7 +131,9 @@
       "citation": "Account purchase agreement",
       "ledger": 3300,
       "ledgerState": "red",
-      "narration": "The charged-off account gets bundled up and sold to a debt buyer, frequently for pennies on the dollar. In some portfolios, these companies pay as little as four cents for every dollar of debt they buy. So a debt buyer might have paid roughly one hundred and twenty dollars for Jake's three-thousand-dollar account. Here is the thing: they now want the entire three thousand back, plus whatever interest the original contract still allows them to add. Collecting that difference is not a side hustle for them. It is the whole business model."
+      "narration": "The charged-off account gets bundled up and sold to a debt buyer, frequently for pennies on the dollar. In some portfolios, these companies pay as little as four cents for every dollar of debt they buy. So a debt buyer might have paid roughly one hundred and twenty dollars for Jake's three-thousand-dollar account. Here is the thing: they now want the entire three thousand back, plus whatever interest the original contract still allows them to add. Collecting that difference is not a side hustle for them. It is the whole business model.",
+      "prop": "bank",
+      "expression": "neutral"
     },
     {
       "id": "settlement",
@@ -123,7 +143,9 @@
       "citation": "IRS Form 1099-C",
       "ledger": 3300,
       "ledgerState": "red",
-      "narration": "Because the debt buyer paid so little, they have enormous room to deal. A letter arrives offering to wipe the whole thing out if Jake pays just forty cents on the dollar, maybe thirteen hundred dollars to settle a thirty-three-hundred-dollar account. It looks like mercy, and sometimes it genuinely is the smart move. But there is a hook hiding in it. The two thousand dollars they forgive does not simply vanish. As we are about to see, the government can treat that forgiven amount as income, and tax it. A settlement can quietly create a brand-new bill from a completely different direction."
+      "narration": "Because the debt buyer paid so little, they have enormous room to deal. A letter arrives offering to wipe the whole thing out if Jake pays just forty cents on the dollar, maybe thirteen hundred dollars to settle a thirty-three-hundred-dollar account. It looks like mercy, and sometimes it genuinely is the smart move. But there is a hook hiding in it. The two thousand dollars they forgive does not simply vanish. As we are about to see, the government can treat that forgiven amount as income, and tax it. A settlement can quietly create a brand-new bill from a completely different direction.",
+      "prop": "money",
+      "expression": "neutral"
     },
     {
       "id": "lawsuit",
@@ -133,7 +155,9 @@
       "citation": "State rules of civil procedure",
       "ledger": 3600,
       "ledgerState": "red",
-      "narration": "If Jake keeps ignoring all of it, the debt buyer's single most powerful option is to take him to court. One ordinary afternoon a process server shows up at his door and hands him a summons. From that exact moment, Jake has a short, strict window, often only twenty to thirty days, to file a written answer with the court. And this is where we reach the most expensive mistake in this entire timeline, the one decision that costs people more than anything else they could possibly do. The mistake is simple, and it feels like the safest option in the world. It is doing nothing at all."
+      "narration": "If Jake keeps ignoring all of it, the debt buyer's single most powerful option is to take him to court. One ordinary afternoon a process server shows up at his door and hands him a summons. From that exact moment, Jake has a short, strict window, often only twenty to thirty days, to file a written answer with the court. And this is where we reach the most expensive mistake in this entire timeline, the one decision that costs people more than anything else they could possibly do. The mistake is simple, and it feels like the safest option in the world. It is doing nothing at all.",
+      "prop": "gavel",
+      "expression": "shocked"
     },
     {
       "id": "default",
@@ -143,7 +167,10 @@
       "citation": "Default judgment",
       "ledger": 3900,
       "ledgerState": "red",
-      "narration": "If Jake does not answer that summons, the court enters a default judgment against him. That is an automatic win for the debt buyer, handed to them without any trial, without any evidence being tested, simply because the other side never showed up. Reviews of debt collection lawsuits have found that the overwhelming majority of them end exactly this way, in a quiet default, because the person being sued never filed a single piece of paper. And that judgment is the master key that unlocks the harshest tools of all."
+      "narration": "If Jake does not answer that summons, the court enters a default judgment against him. That is an automatic win for the debt buyer, handed to them without any trial, without any evidence being tested, simply because the other side never showed up. Reviews of debt collection lawsuits have found that the overwhelming majority of them end exactly this way, in a quiet default, because the person being sued never filed a single piece of paper. And that judgment is the master key that unlocks the harshest tools of all.",
+      "prop": "document",
+      "stamp": true,
+      "expression": "worried"
     },
     {
       "id": "doc-garnish",
@@ -166,7 +193,8 @@
           "action": "focus",
           "value": 1
         }
-      ]
+      ],
+      "expression": "worried"
     },
     {
       "id": "doc-sol",
@@ -189,7 +217,8 @@
           "action": "focus",
           "value": 1
         }
-      ]
+      ],
+      "expression": "neutral"
     },
     {
       "id": "doc-fcra",
@@ -207,7 +236,8 @@
           "action": "focus",
           "value": 0
         }
-      ]
+      ],
+      "expression": "happy"
     },
     {
       "id": "the-twist",
@@ -217,7 +247,9 @@
       "citation": "IRS Form 1099-C",
       "ledger": 660,
       "ledgerState": "red",
-      "narration": "Here is the twist that can turn a happy ending sour. If the lender ever formally cancels the debt, say they write off three thousand dollars in a charge-off, or they settle for less and forgive the rest, they can file a form with the IRS called a ten ninety-nine C, a cancellation of debt. And to the Internal Revenue Service, forgiven debt is not a gift and it is not nothing. It is income, the same as a paycheck. That means Jake can be taxed on the three thousand dollars that he thought was wiped away for good. In a twenty-two percent bracket, that is a surprise tax bill of around six hundred and sixty dollars, arriving in the mail a full year after he thought the whole ordeal was finally over."
+      "narration": "Here is the twist that can turn a happy ending sour. If the lender ever formally cancels the debt, say they write off three thousand dollars in a charge-off, or they settle for less and forgive the rest, they can file a form with the IRS called a ten ninety-nine C, a cancellation of debt. And to the Internal Revenue Service, forgiven debt is not a gift and it is not nothing. It is income, the same as a paycheck. That means Jake can be taxed on the three thousand dollars that he thought was wiped away for good. In a twenty-two percent bracket, that is a surprise tax bill of around six hundred and sixty dollars, arriving in the mail a full year after he thought the whole ordeal was finally over.",
+      "prop": "document",
+      "expression": "shocked"
     },
     {
       "id": "doc-61",
@@ -240,7 +272,8 @@
           "action": "focus",
           "value": 1
         }
-      ]
+      ],
+      "expression": "neutral"
     },
     {
       "id": "escape-hatch",
@@ -250,28 +283,36 @@
       "citation": "26 U.S.C. 108 insolvency exclusion",
       "ledger": 0,
       "ledgerState": "gold",
-      "narration": "But even that tax bill has a legal escape hatch built right into the code. Section one hundred and eight says that if Jake was insolvent at the moment the debt was cancelled, meaning his total debts were larger than everything he owned, he can exclude that forgiven amount from his taxable income. A lot of people who default on their cards actually qualify for this, because they were deep underwater when the debt was wiped. The catch is that it is never automatic. It has to be claimed, in the right way, on the tax return."
+      "narration": "But even that tax bill has a legal escape hatch built right into the code. Section one hundred and eight says that if Jake was insolvent at the moment the debt was cancelled, meaning his total debts were larger than everything he owned, he can exclude that forgiven amount from his taxable income. A lot of people who default on their cards actually qualify for this, because they were deep underwater when the debt was wiped. The catch is that it is never automatic. It has to be claimed, in the right way, on the tax return.",
+      "prop": "shield",
+      "expression": "happy"
     },
     {
       "id": "jurisdiction",
       "kind": "jurisdiction",
       "headline": "YOUR STATE SETS THE CLOCK",
       "subhead": "Limitation periods, garnishment caps and exemptions change state by state, and the UK, Canada and Australia work differently again.",
-      "narration": "One serious warning before the recap. Almost every number in Jake's story bends depending on exactly where he lives. The statute of limitations, the garnishment cap, and which of his possessions are protected from creditors are all set state by state, and they vary a lot. And the moment you step outside the United States, into the United Kingdom, Canada, or Australia, the entire framework changes into something different."
+      "narration": "One serious warning before the recap. Almost every number in Jake's story bends depending on exactly where he lives. The statute of limitations, the garnishment cap, and which of his possessions are protected from creditors are all set state by state, and they vary a lot. And the moment you step outside the United States, into the United Kingdom, Canada, or Australia, the entire framework changes into something different.",
+      "pose": "shrug",
+      "expression": "neutral"
     },
     {
       "id": "recap",
       "kind": "chapter",
       "headline": "THE WHOLE CLOCK",
       "subhead": "Day 1 to Year 7, in one breath.",
-      "narration": "Let us put the whole clock on the table at once. Day one, the missed payment. Day thirty, a late fee and a penalty interest rate. Day sixty, the first blow to the credit score. Day ninety, the collectors call, and with them comes a thirty-day right to dispute. Day one hundred and eighty, the charge-off, and the sale to a debt buyer for pennies. Then, somewhere in the first year, the lawsuit, the default judgment for whoever stays silent, and wage garnishment capped at twenty-five percent. Somewhere between year three and year six, depending on the state, the clock to sue runs out. At year seven, the mark falls off the credit report. And at almost any point, a cancelled balance can reappear as a tax bill, unless Jake was insolvent when it was forgiven."
+      "narration": "Let us put the whole clock on the table at once. Day one, the missed payment. Day thirty, a late fee and a penalty interest rate. Day sixty, the first blow to the credit score. Day ninety, the collectors call, and with them comes a thirty-day right to dispute. Day one hundred and eighty, the charge-off, and the sale to a debt buyer for pennies. Then, somewhere in the first year, the lawsuit, the default judgment for whoever stays silent, and wage garnishment capped at twenty-five percent. Somewhere between year three and year six, depending on the state, the clock to sue runs out. At year seven, the mark falls off the credit report. And at almost any point, a cancelled balance can reappear as a tax bill, unless Jake was insolvent when it was forgiven.",
+      "pose": "present",
+      "expression": "neutral"
     },
     {
       "id": "outro",
       "kind": "outro",
       "headline": "SILENCE IS THE EXPENSIVE CHOICE",
       "subhead": "Ignoring the lawsuit is what turns a bill into a judgment.",
-      "narration": "So here is the whole arc in one breath. Never paying a credit card will not send Jake to jail, because there is no debtors' prison for this kind of debt in America. But ignoring the lawsuit is the thing that transforms a three-thousand-dollar bill into a court judgment, garnished wages, and an unexpected tax surprise. Yes, the debt can expire in seven years. The only real question is how much it costs him on the way there. If you want the next breakdown, exactly what happens when a debt collector sues you, step by step, let us know, and that is the one we will build next."
+      "narration": "So here is the whole arc in one breath. Never paying a credit card will not send Jake to jail, because there is no debtors' prison for this kind of debt in America. But ignoring the lawsuit is the thing that transforms a three-thousand-dollar bill into a court judgment, garnished wages, and an unexpected tax surprise. Yes, the debt can expire in seven years. The only real question is how much it costs him on the way there. If you want the next breakdown, exactly what happens when a debt collector sues you, step by step, let us know, and that is the one we will build next.",
+      "pose": "cheer",
+      "expression": "happy"
     }
   ],
   "sources": [

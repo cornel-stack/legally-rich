@@ -78,49 +78,39 @@ export const Hud: React.FC<{
         </div>
       </div>
 
-      {/* top-right: chapter ladder */}
+      {/* bottom-left: chapter ladder (above the footer) */}
       {totalChapters > 0 && (
-        <div style={{ position: "absolute", top: 54, right: 70, display: "flex", gap: 10, alignItems: "center" }}>
+        <div style={{ position: "absolute", bottom: 34, left: 70, display: "flex", gap: 10, alignItems: "center" }}>
           {Array.from({ length: totalChapters }).map((_, i) => {
             const done = i < curChapter;
             return (
-              <div
-                key={i}
-                style={{
-                  width: done ? 34 : 22,
-                  height: 10,
-                  borderRadius: 6,
-                  background: done ? accent : "rgba(23,18,13,0.18)",
-                  transition: "none",
-                }}
-              />
+              <div key={i} style={{ width: done ? 34 : 22, height: 10, borderRadius: 6, background: done ? accent : "rgba(23,18,13,0.14)" }} />
             );
           })}
         </div>
       )}
 
-      {/* ledger strip: running balance, bottom-left above captions area */}
+      {/* ledger strip: running balance, top-right */}
       {showLedger && (
         <div
           style={{
             position: "absolute",
-            top: 40,
-            left: "50%",
-            transform: "translateX(-50%)",
+            top: 42,
+            right: 66,
             display: "flex",
             alignItems: "baseline",
-            gap: 16,
-            background: "rgba(255,255,255,0.86)",
+            gap: 12,
+            background: "#fff",
             border: `3px solid ${color}`,
             borderRadius: 14,
-            padding: "10px 26px",
-            boxShadow: "0 6px 18px rgba(0,0,0,0.12)",
+            padding: "8px 20px",
+            boxShadow: "0 5px 0 rgba(0,0,0,0.08)",
           }}
         >
-          <span style={{ fontFamily: inter, fontWeight: 800, fontSize: 20, letterSpacing: 1.2, color: palette.inkSoft, textTransform: "uppercase" }}>
-            Balance owed
+          <span style={{ fontFamily: inter, fontWeight: 800, fontSize: 17, letterSpacing: 1, color: palette.inkSoft, textTransform: "uppercase" }}>
+            Balance
           </span>
-          <span style={{ fontFamily: anton, fontSize: 46, color, lineHeight: 1 }}>{money(value)}</span>
+          <span style={{ fontFamily: anton, fontSize: 40, color, lineHeight: 1 }}>{money(value)}</span>
         </div>
       )}
     </>

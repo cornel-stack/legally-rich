@@ -1,115 +1,95 @@
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { Character } from "../art/Character";
+import { Prop, PropName } from "../art/props";
 import { RoughShape } from "../lib/rough";
 import { anton, inter, palette } from "../lib/theme";
 import { reveal } from "../lib/util";
 
 /**
- * The cold open. The stakes land as a number before the character speaks.
- * A hand-drawn ring scribbles around it; the figure punches in and settles.
+ * The hook. The card draws itself on, a red X is slashed across it, "STOP PAYING?"
+ * punches in, the character recoils — then a row of consequence icons pops in as a
+ * teaser for the whole video.
  */
-export const ColdOpen: React.FC<{
-  headline: string;
-  subhead?: string;
-  accent: string;
-  kicker?: string;
-}> = ({ headline, subhead, accent, kicker }) => {
+export const ColdOpen: React.FC<{ headline: string; subhead?: string; accent: string; kicker?: string }> = ({ headline, subhead, accent, kicker }) => {
   const frame = useCurrentFrame();
   const { fps, width } = useVideoConfig();
 
-  const punch = spring({ frame, fps, config: { damping: 9, mass: 0.7, stiffness: 120 } });
-  const scale = interpolate(punch, [0, 1], [1.6, 1]);
-  const settle = interpolate(frame, [0, 6], [0, 1], { extrapolateRight: "clamp" });
+  const enter = spring({ frame, fps, config: { damping: 12, stiffness: 110 } });
+  const cardDraw = reveal(frame, 10, 34);
+  const cardPop = spring({ frame: frame - 8, fps, config: { damping: 10, stiffness: 120 } });
 
-  // impact shake on the first few frames
-  const shake = frame < 10 ? Math.sin(frame * 3) * (10 - frame) * 1.1 : 0;
+  // red X slashes across the card
+  const slash1 = reveal(frame, 46, 60);
+  const slash2 = reveal(frame, 58, 72);
+  const slashed = frame > 50;
 
-  // hand-drawn ring draws on after the number lands
-  const ringDraw = reveal(frame, 14, 40);
-  const kickerIn = reveal(frame, 2, 14);
-  const subIn = reveal(frame, 44, 60);
+  const kickerIn = reveal(frame, 4, 18);
+  const stopPop = spring({ frame: frame - 70, fps, config: { damping: 9, mass: 0.7, stiffness: 130 } });
+  const shake = frame > 70 && frame < 86 ? Math.sin(frame * 3) * (86 - frame) * 0.9 : 0;
 
-  const ringW = Math.min(1500, headline.length * 72 + 220);
-  const ringH = 260;
+  // teaser icons pop in one by one after ~3.2s
+  const teasers: PropName[] = ["gavel", "bank", "hourglass", "prison"];
+
+  const cardCx = width / 2 + 60;
+  const cardCy = 470;
 
   return (
-    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
-      <div style={{ transform: `translate(${shake}px, 0)`, textAlign: "center", position: "relative" }}>
-        {kicker && (
-          <div
-            style={{
-              opacity: kickerIn,
-              transform: `translateY(${(1 - kickerIn) * -20}px)`,
-              fontFamily: inter,
-              fontWeight: 800,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-              fontSize: 34,
-              color: accent,
-              marginBottom: 18,
-            }}
-          >
-            {kicker}
-          </div>
-        )}
+    <AbsoluteFill>
+      {/* floating $ and % doodles for life */}
+      {["$", "%", "$", "%", "$"].map((s, i) => {
+        const x = 160 + i * 360;
+        const y = 180 + Math.sin(frame * 0.05 + i) * 16 + (i % 2) * 60;
+        return <div key={i} style={{ position: "absolute", left: x, top: y, fontFamily: anton, fontSize: 70, color: "#efe7da" }}>{s}</div>;
+      })}
 
-        <div style={{ position: "relative", display: "inline-block", padding: "0 60px" }}>
-          <div
-            style={{
-              opacity: settle,
-              transform: `scale(${scale})`,
-              fontFamily: anton,
-              fontSize: 190,
-              lineHeight: 0.98,
-              color: palette.ink,
-              textShadow: "4px 5px 0 rgba(0,0,0,0.08)",
-            }}
-          >
-            {headline}
-          </div>
-
-          {/* hand-drawn ring around the number */}
-          <svg
-            width={ringW}
-            height={ringH}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              transform: "translate(-50%,-50%)",
-              overflow: "visible",
-              pointerEvents: "none",
-            }}
-          >
-            <RoughShape
-              shape={{ type: "ellipse", cx: ringW / 2, cy: ringH / 2, w: ringW - 20, h: ringH - 20 }}
-              seed={11}
-              draw={ringDraw}
-              boil={5}
-              options={{ stroke: accent, strokeWidth: 8, roughness: 2.4, bowing: 1.5 }}
-            />
-          </svg>
-        </div>
-
-        {subhead && (
-          <div
-            style={{
-              opacity: subIn,
-              transform: `translateY(${(1 - subIn) * 20}px)`,
-              fontFamily: inter,
-              fontWeight: 700,
-              fontSize: 46,
-              color: palette.inkSoft,
-              marginTop: 60,
-              maxWidth: width * 0.7,
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          >
-            {subhead}
-          </div>
-        )}
+      {/* kicker */}
+      <div style={{ position: "absolute", top: 120, left: 0, right: 0, textAlign: "center", opacity: kickerIn }}>
+        <span style={{ fontFamily: inter, fontWeight: 800, letterSpacing: 6, textTransform: "uppercase", fontSize: 40, color: palette.inkSoft }}>
+          {kicker || "What if you just…"}
+        </span>
       </div>
+
+      {/* STOP PAYING? */}
+      <div style={{ position: "absolute", top: 180, left: 0, right: 0, textAlign: "center", transform: `scale(${stopPop}) translateX(${shake}px)`, transformOrigin: "center" }}>
+        <span style={{ fontFamily: anton, fontSize: 150, color: palette.red, textShadow: "5px 6px 0 rgba(0,0,0,0.12)" }}>{headline || "STOP PAYING?"}</span>
+      </div>
+
+      <svg width={width} height={1080} style={{ position: "absolute", overflow: "visible" }}>
+        {/* character bottom-left, recoils once slashed */}
+        <g transform={`translate(${120 + (1 - enter) * -200}, 360) scale(0.86)`} opacity={enter}>
+          <Character pose={slashed ? "worried" : "present"} expression={slashed ? "shocked" : "happy"} shirt="#3b82f6" />
+        </g>
+
+        {/* the credit card (inner g centres the box on the origin) */}
+        <g transform={`translate(${cardCx}, ${cardCy}) scale(${1.7 * (0.6 + 0.4 * Math.max(0.001, cardPop))})`}>
+          <g transform="translate(-130,-100)">
+            <Prop name="credit-card" draw={cardDraw} accent={accent} />
+            <text x={130} y={215} textAnchor="middle" fontFamily="Anton, sans-serif" fontSize={54} fill={palette.ink} opacity={reveal(frame, 34, 46)}>$3,000</text>
+          </g>
+        </g>
+
+        {/* red X */}
+        <g transform={`translate(${cardCx}, ${cardCy})`}>
+          <RoughShape shape={{ type: "line", x1: -170, y1: -120, x2: 170, y2: 120 }} seed={3} draw={slash1} options={{ stroke: palette.red, strokeWidth: 16, roughness: 1.8 }} />
+          <RoughShape shape={{ type: "line", x1: 170, y1: -120, x2: -170, y2: 120 }} seed={4} draw={slash2} options={{ stroke: palette.red, strokeWidth: 16, roughness: 1.8 }} />
+        </g>
+      </svg>
+
+      {/* teaser consequence icons */}
+      <svg width={width} height={1080} style={{ position: "absolute", overflow: "visible" }}>
+        {teasers.map((t, i) => {
+          const pop = spring({ frame: frame - (96 + i * 10), fps, config: { damping: 11, stiffness: 130 } });
+          const x = width / 2 - 560 + i * 380;
+          return (
+            <g key={t} transform={`translate(${x}, 820) scale(${1.15 * pop})`} opacity={pop}>
+              <g transform="translate(-130,-115)">
+                <Prop name={t} draw={pop} accent={i % 2 ? palette.red : accent} />
+              </g>
+            </g>
+          );
+        })}
+      </svg>
     </AbsoluteFill>
   );
 };

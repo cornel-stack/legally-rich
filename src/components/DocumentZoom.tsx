@@ -1,7 +1,8 @@
 import React, { useMemo } from "react";
-import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { Character, Expression } from "../art/Character";
 import { RoughShape } from "../lib/rough";
-import { inter, palette } from "../lib/theme";
+import { anton, inter, palette } from "../lib/theme";
 import { reveal } from "../lib/util";
 import type { Beat, Evidence } from "../schema";
 
@@ -21,7 +22,9 @@ export const DocumentZoom: React.FC<{
   beats: (Beat & { at: number })[];
   sceneDurationSec: number;
   accent: string;
-}> = ({ evidence, beats, sceneDurationSec, accent }) => {
+  headline?: string;
+  expression?: string;
+}> = ({ evidence, beats, sceneDurationSec, accent, headline, expression }) => {
   const frame = useCurrentFrame();
   const { fps, width, height } = useVideoConfig();
   const t = frame / fps;
@@ -29,11 +32,11 @@ export const DocumentZoom: React.FC<{
   const imgW = evidence.imgW ?? 1400;
   const imgH = evidence.imgH ?? 1800;
 
-  // viewport (leaves room for HUD on top and captions at the bottom)
-  const VPW = width - 360;
-  const VPH = height - 440;
-  const vpX = (width - VPW) / 2;
-  const vpY = 150;
+  // viewport sits to the right; the character examines it from the left
+  const VPW = width - 620;
+  const VPH = height - 420;
+  const vpX = 470;
+  const vpY = 140;
 
   // Fit the document to the viewport WIDTH so the text is readable; the page is
   // then taller than the viewport and the camera pans down it like a reader.
@@ -92,6 +95,25 @@ export const DocumentZoom: React.FC<{
 
   return (
     <AbsoluteFill>
+      {/* headline */}
+      {headline && (
+        <div style={{ position: "absolute", top: 40, left: vpX, width: VPW, textAlign: "center", opacity: pageIn }}>
+          <span style={{ fontFamily: anton, fontSize: 56, color: palette.ink }}>{headline}</span>
+        </div>
+      )}
+
+      {/* character examining the document with a magnifier */}
+      <svg width={470} height={height} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
+        <g transform={`translate(${30 + (1 - pageIn) * -160}, 430) scale(0.8)`} opacity={pageIn}>
+          <Character pose="hold-right" expression={(expression as Expression) || "neutral"} shirt="#3b82f6" />
+          {/* magnifier in the raised hand, tilted toward the page */}
+          <g transform="translate(250, 250) scale(0.7) rotate(20)">
+            <RoughShape shape={{ type: "circle", cx: 90, cy: 90, d: 130 }} seed={61} options={{ stroke: accent, strokeWidth: 9, fill: "rgba(255,255,255,0.3)", fillStyle: "solid", roughness: 1.4 }} />
+            <RoughShape shape={{ type: "line", x1: 140, y1: 140, x2: 210, y2: 210 }} seed={62} options={{ stroke: palette.ink, strokeWidth: 16, roughness: 1.2 }} />
+          </g>
+        </g>
+      </svg>
+
       {/* viewport */}
       <div
         style={{
