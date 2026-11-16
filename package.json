@@ -1,0 +1,31 @@
+{
+  "name": "legally-rich",
+  "version": "0.1.0",
+  "description": "Legally Rich — evidence-grounded, code-drawn legal explainer videos rendered on CI",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tts": "python3 scripts/tts.py",
+    "evidence": "python3 scripts/fetch_evidence.py",
+    "manifest": "node scripts/build_manifest.mjs",
+    "build": "node scripts/build.mjs",
+    "preview": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Episode out/episode.mp4"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.370",
+    "@remotion/cli": "4.0.370",
+    "@remotion/google-fonts": "^4.0.370",
+    "@remotion/media-utils": "4.0.370",
+    "@remotion/renderer": "4.0.370",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.370",
+    "roughjs": "4.6.6",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "typescript": "5.6.3"
+  }
+}

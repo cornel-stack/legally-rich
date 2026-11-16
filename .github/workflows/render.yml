@@ -1,0 +1,81 @@
+name: Render episode
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "episodes/**/case.json"
+      - "episodes/**/evidence/**"
+      - "src/**"
+      - "scripts/**"
+      - ".github/workflows/render.yml"
+  workflow_dispatch:
+    inputs:
+      episode:
+        description: "Episode directory to render"
+        default: "episodes/ep01-credit-card"
+        required: true
+
+concurrency:
+  group: render-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system deps (ffprobe for durations)
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install node deps
+        run: npm ci
+
+      - name: Install edge-tts
+        run: pip install "edge-tts==7.3.1"
+
+      - name: Build + render
+        env:
+          EPISODE: ${{ github.event.inputs.episode || 'episodes/ep01-credit-card' }}
+        run: node scripts/build.mjs "$EPISODE"
+
+      - name: Upload video
+        uses: actions/upload-artifact@v4
+        with:
+          name: episode-mp4
+          path: out/*.mp4
+          if-no-files-found: error
+          retention-days: 14
+
+  # Manual: re-capture the legal evidence PNGs (court/agency pages) and commit them.
+  # Evidence is committed so the render job above never needs to hit the live sites.
+  refresh-evidence:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Capture evidence
+        run: python3 scripts/fetch_evidence.py "${{ github.event.inputs.episode || 'episodes/ep01-credit-card' }}"
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidence-png
+          path: episodes/**/evidence/*.png

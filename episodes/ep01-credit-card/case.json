@@ -1,0 +1,469 @@
+{
+  "id": "ep01-credit-card",
+  "series": "What Happens If",
+  "title": "What Happens If You Never Pay Your Credit Card?",
+  "jurisdiction": "US",
+  "character": "Jake",
+  "accentColor": "#ea580c",
+  "voice": "en-US-BrianNeural",
+  "rate": "+6%",
+  "scenes": [
+    {
+      "id": "cold-open",
+      "kind": "cold-open",
+      "headline": "$3,000",
+      "subhead": "What happens if you never pay?",
+      "narration": "Three thousand dollars. One credit card. One missed payment. Most people believe that if they just stop paying and go quiet, the debt eventually disappears into thin air. And here is the strange part: they are actually half right. Under federal law, this debt really can fall off the record in exactly seven years. But the road to that day runs straight through late fees, a wrecked credit score, a courtroom, and your paycheck. And waiting at the very end is a trap almost nobody sees coming, one that can hand you a tax bill for money you never actually received. This is the entire timeline, day by day, with the real law on screen the whole way."
+    },
+    {
+      "id": "intro",
+      "kind": "title",
+      "headline": "DAY 1 TO YEAR 7",
+      "subhead": "One missed payment, start to finish.",
+      "narration": "Meet Jake. He owes three thousand dollars on a single credit card, and he has decided he is never going to pay it again. Every stage you are about to watch follows real United States law: the Fair Debt Collection Practices Act, the Fair Credit Reporting Act, and the Internal Revenue Code. We are going to put the actual statutes on the screen so you can read them yourself. Just know up front that this is educational, not legal advice, and the exact dollar figures here are one realistic example, not a promise."
+    },
+    {
+      "id": "day1",
+      "kind": "step",
+      "headline": "THE MISSED PAYMENT",
+      "subhead": "Day 1",
+      "citation": "Cardholder agreement",
+      "ledger": 3000,
+      "ledgerState": "red",
+      "narration": "Day one. Jake misses his minimum payment, and on the surface, absolutely nothing happens. No phone call. No letter. No knock at the door. But behind the scenes, a clock has started ticking. Interest keeps compounding on the full balance at his card's purchase rate, and the account is quietly flagged as past due inside the bank's system. Right now the three thousand dollars is still just three thousand dollars. It will not stay that way for long."
+    },
+    {
+      "id": "day30",
+      "kind": "step",
+      "headline": "LATE FEE + PENALTY APR",
+      "subhead": "Day 30",
+      "citation": "Reg Z, 12 C.F.R. 1026.52",
+      "ledger": 3041,
+      "ledgerState": "red",
+      "narration": "Day thirty. The first real consequence arrives: a late fee. Federal rules under Regulation Z let a card issuer charge a late fee that typically lands somewhere between thirty and forty-one dollars for a single missed payment. On top of that, most cardholder agreements let the bank switch on a penalty interest rate, often as high as twenty-nine point nine-nine percent, which now applies to the balance going forward. Jake's total ticks upward, and the interest that balance generates gets a little bigger every single month."
+    },
+    {
+      "id": "day60",
+      "kind": "step",
+      "headline": "REPORTED 30 DAYS LATE",
+      "subhead": "Day 30 to 60",
+      "citation": "FCRA, 15 U.S.C. 1681s-2",
+      "ledger": 3090,
+      "ledgerState": "red",
+      "narration": "Once that payment is a full thirty days late, the issuer reports it to the three major credit bureaus. This is the first black mark on Jake's file, and it is a heavy one. A single thirty-day-late notation can knock a good credit score down by anywhere from fifty to well over a hundred points, almost overnight. And that one invisible number quietly controls far more than loans. It touches his apartment applications, the price of his car insurance, his utility deposits, and sometimes even a job offer."
+    },
+    {
+      "id": "doc-fdcpa",
+      "kind": "document",
+      "headline": "The 30-Day Weapon",
+      "subhead": "Day 90",
+      "document": "fdcpa-1692g",
+      "ledger": 3150,
+      "ledgerState": "red",
+      "citation": "15 U.S.C. 1692g",
+      "narration": "Day ninety. The account is handed off to a debt collection agency, and the phone starts ringing. But the law quietly hands Jake a weapon, and it is the one most people throw straight in the trash. Under the Fair Debt Collection Practices Act, the collector's very first written notice has to tell him that he can dispute the debt. If he disputes it in writing within thirty days of that notice, the collector is legally required to stop and verify the debt before they can collect another single cent from him.",
+      "beats": [
+        {
+          "anchor": "dispute the debt",
+          "action": "focus",
+          "value": 0
+        },
+        {
+          "anchor": "within thirty days",
+          "action": "focus",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "harassment-limits",
+      "kind": "step",
+      "headline": "WHAT A COLLECTOR CAN'T DO",
+      "subhead": "The rules on the calls",
+      "citation": "15 U.S.C. 1692c and 1692d",
+      "ledger": 3200,
+      "ledgerState": "red",
+      "narration": "Now, the calls can feel relentless, but the same law puts the collector on a short leash. A debt collector cannot call Jake before eight in the morning or after nine at night. They cannot call him at work once he tells them his employer forbids it. They cannot threaten him with arrest, pretend to be a lawyer or the government, or use obscene language to frighten him. If he sends a single letter telling them to stop contacting him, they legally must, except to confirm there will be no more contact or to tell him they are suing. Most people never find out those rights exist."
+    },
+    {
+      "id": "credit-cost",
+      "kind": "step",
+      "headline": "THE SCORE IS THE REAL BILL",
+      "subhead": "What that number costs",
+      "citation": "Risk-based pricing",
+      "ledger": 3300,
+      "ledgerState": "red",
+      "narration": "And here is the cost almost nobody adds up. That wrecked credit score follows Jake into every financial decision for years. The next car loan comes with a double-digit interest rate instead of a low one. A mortgage, if he can get one at all, costs tens of thousands more over its life. Landlords quietly reject the application. The power company and the phone carrier demand hundreds of dollars in deposits. In many states, his car insurance premium goes up, purely because of the score. The three-thousand-dollar debt is almost the smallest number in this entire story."
+    },
+    {
+      "id": "day180",
+      "kind": "step",
+      "headline": "CHARGE-OFF",
+      "subhead": "Day 180",
+      "citation": "OCC Uniform Retail Credit Classification",
+      "ledger": 3300,
+      "ledgerState": "red",
+      "narration": "Day one hundred and eighty. Six straight months of missed payments triggers what is called a charge-off, and this is the single most misunderstood word in the whole process. A charge-off does not mean the debt is forgiven, erased, or gone. It is purely an accounting event. The bank is simply declaring the loan a loss on its own internal books so it can clean up its balance sheet for regulators and claim a tax deduction of its own. Jake still owes every last dollar of it. And what the bank very often does next is sell that debt to someone else entirely."
+    },
+    {
+      "id": "debtbuyer",
+      "kind": "step",
+      "headline": "SOLD TO A DEBT BUYER",
+      "subhead": "Day 180+",
+      "citation": "Account purchase agreement",
+      "ledger": 3300,
+      "ledgerState": "red",
+      "narration": "The charged-off account gets bundled up and sold to a debt buyer, frequently for pennies on the dollar. In some portfolios, these companies pay as little as four cents for every dollar of debt they buy. So a debt buyer might have paid roughly one hundred and twenty dollars for Jake's three-thousand-dollar account. Here is the thing: they now want the entire three thousand back, plus whatever interest the original contract still allows them to add. Collecting that difference is not a side hustle for them. It is the whole business model."
+    },
+    {
+      "id": "settlement",
+      "kind": "step",
+      "headline": "THE SETTLEMENT OFFER",
+      "subhead": "40 cents on the dollar",
+      "citation": "IRS Form 1099-C",
+      "ledger": 3300,
+      "ledgerState": "red",
+      "narration": "Because the debt buyer paid so little, they have enormous room to deal. A letter arrives offering to wipe the whole thing out if Jake pays just forty cents on the dollar, maybe thirteen hundred dollars to settle a thirty-three-hundred-dollar account. It looks like mercy, and sometimes it genuinely is the smart move. But there is a hook hiding in it. The two thousand dollars they forgive does not simply vanish. As we are about to see, the government can treat that forgiven amount as income, and tax it. A settlement can quietly create a brand-new bill from a completely different direction."
+    },
+    {
+      "id": "lawsuit",
+      "kind": "step",
+      "headline": "THE LAWSUIT",
+      "subhead": "Month 7 to 12",
+      "citation": "State rules of civil procedure",
+      "ledger": 3600,
+      "ledgerState": "red",
+      "narration": "If Jake keeps ignoring all of it, the debt buyer's single most powerful option is to take him to court. One ordinary afternoon a process server shows up at his door and hands him a summons. From that exact moment, Jake has a short, strict window, often only twenty to thirty days, to file a written answer with the court. And this is where we reach the most expensive mistake in this entire timeline, the one decision that costs people more than anything else they could possibly do. The mistake is simple, and it feels like the safest option in the world. It is doing nothing at all."
+    },
+    {
+      "id": "default",
+      "kind": "step",
+      "headline": "DEFAULT JUDGMENT",
+      "subhead": "If he stays silent",
+      "citation": "Default judgment",
+      "ledger": 3900,
+      "ledgerState": "red",
+      "narration": "If Jake does not answer that summons, the court enters a default judgment against him. That is an automatic win for the debt buyer, handed to them without any trial, without any evidence being tested, simply because the other side never showed up. Reviews of debt collection lawsuits have found that the overwhelming majority of them end exactly this way, in a quiet default, because the person being sued never filed a single piece of paper. And that judgment is the master key that unlocks the harshest tools of all."
+    },
+    {
+      "id": "doc-garnish",
+      "kind": "document",
+      "headline": "Wage Garnishment",
+      "subhead": "The judgment's power",
+      "document": "ccpa-1673",
+      "ledger": 3900,
+      "ledgerState": "red",
+      "citation": "15 U.S.C. 1673",
+      "narration": "With a judgment in hand, the debt buyer can now garnish Jake's wages, meaning money is pulled straight out of his paycheck before he ever sees it. But federal law puts a ceiling on this. Under the Consumer Credit Protection Act, an ordinary creditor cannot take more than twenty-five percent of his disposable earnings in a week. Some states protect even more, and a handful, like Texas and Pennsylvania, block wage garnishment for this kind of debt almost completely. But that same judgment can also freeze his bank account and attach a lien to his property.",
+      "beats": [
+        {
+          "anchor": "twenty-five percent",
+          "action": "focus",
+          "value": 0
+        },
+        {
+          "anchor": "disposable earnings",
+          "action": "focus",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "doc-sol",
+      "kind": "document",
+      "headline": "The Clock Nobody Mentions",
+      "subhead": "Statute of limitations",
+      "document": "cfpb-sol",
+      "ledger": 3900,
+      "ledgerState": "red",
+      "citation": "State statute of limitations",
+      "narration": "But the debt buyer is racing a hidden clock of its own, and it is called the statute of limitations. Every state sets a deadline, most commonly somewhere between three and six years, after which no one can win a lawsuit forcing Jake to pay this debt. Once that window closes, the debt becomes what the law calls time-barred. And here is the trap buried inside it: in many states, making even one small payment, or in some places just verbally promising to pay, can reset that clock all the way back to zero and revive the entire debt.",
+      "beats": [
+        {
+          "anchor": "statute of limitations",
+          "action": "focus",
+          "value": 0
+        },
+        {
+          "anchor": "time-barred",
+          "action": "focus",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "doc-fcra",
+      "kind": "document",
+      "headline": "Year 7: It Falls Off",
+      "subhead": "The seven-year rule",
+      "document": "fcra-1681c",
+      "ledger": 0,
+      "ledgerState": "gold",
+      "citation": "15 U.S.C. 1681c",
+      "narration": "Now we reach the moment everyone is actually waiting for. Under the Fair Credit Reporting Act, most negative items, including this charged-off account, must be removed from Jake's credit report after seven years. And it is not seven years from today, or from the lawsuit. The clock runs from roughly the date of that very first missed payment back on day one. On that anniversary, the black mark legally disappears from his report, and his credit score can finally begin the long climb back up.",
+      "beats": [
+        {
+          "anchor": "seven years",
+          "action": "focus",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "the-twist",
+      "kind": "step",
+      "headline": "THE 1099-C TWIST",
+      "subhead": "The tax bill nobody expects",
+      "citation": "IRS Form 1099-C",
+      "ledger": 660,
+      "ledgerState": "red",
+      "narration": "Here is the twist that can turn a happy ending sour. If the lender ever formally cancels the debt, say they write off three thousand dollars in a charge-off, or they settle for less and forgive the rest, they can file a form with the IRS called a ten ninety-nine C, a cancellation of debt. And to the Internal Revenue Service, forgiven debt is not a gift and it is not nothing. It is income, the same as a paycheck. That means Jake can be taxed on the three thousand dollars that he thought was wiped away for good. In a twenty-two percent bracket, that is a surprise tax bill of around six hundred and sixty dollars, arriving in the mail a full year after he thought the whole ordeal was finally over."
+    },
+    {
+      "id": "doc-61",
+      "kind": "document",
+      "headline": "Forgiven Equals Taxable",
+      "subhead": "It's in the definition",
+      "document": "usc-61",
+      "ledger": 660,
+      "ledgerState": "red",
+      "citation": "26 U.S.C. 61(a)",
+      "narration": "And this is not some obscure loophole or an aggressive interpretation. It is written directly into the definition of gross income itself. The tax code, in its list of what counts as taxable income, specifically names income from the discharge of indebtedness. Cancelled debt of more than six hundred dollars is generally reported on that ten ninety-nine C, and the IRS receives its own copy of the form whether or not Jake ever opens his mail or remembers it exists.",
+      "beats": [
+        {
+          "anchor": "gross income",
+          "action": "focus",
+          "value": 0
+        },
+        {
+          "anchor": "discharge",
+          "action": "focus",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "escape-hatch",
+      "kind": "step",
+      "headline": "THE ESCAPE HATCH",
+      "subhead": "26 U.S.C. 108",
+      "citation": "26 U.S.C. 108 insolvency exclusion",
+      "ledger": 0,
+      "ledgerState": "gold",
+      "narration": "But even that tax bill has a legal escape hatch built right into the code. Section one hundred and eight says that if Jake was insolvent at the moment the debt was cancelled, meaning his total debts were larger than everything he owned, he can exclude that forgiven amount from his taxable income. A lot of people who default on their cards actually qualify for this, because they were deep underwater when the debt was wiped. The catch is that it is never automatic. It has to be claimed, in the right way, on the tax return."
+    },
+    {
+      "id": "jurisdiction",
+      "kind": "jurisdiction",
+      "headline": "YOUR STATE SETS THE CLOCK",
+      "subhead": "Limitation periods, garnishment caps and exemptions change state by state, and the UK, Canada and Australia work differently again.",
+      "narration": "One serious warning before the recap. Almost every number in Jake's story bends depending on exactly where he lives. The statute of limitations, the garnishment cap, and which of his possessions are protected from creditors are all set state by state, and they vary a lot. And the moment you step outside the United States, into the United Kingdom, Canada, or Australia, the entire framework changes into something different."
+    },
+    {
+      "id": "recap",
+      "kind": "chapter",
+      "headline": "THE WHOLE CLOCK",
+      "subhead": "Day 1 to Year 7, in one breath.",
+      "narration": "Let us put the whole clock on the table at once. Day one, the missed payment. Day thirty, a late fee and a penalty interest rate. Day sixty, the first blow to the credit score. Day ninety, the collectors call, and with them comes a thirty-day right to dispute. Day one hundred and eighty, the charge-off, and the sale to a debt buyer for pennies. Then, somewhere in the first year, the lawsuit, the default judgment for whoever stays silent, and wage garnishment capped at twenty-five percent. Somewhere between year three and year six, depending on the state, the clock to sue runs out. At year seven, the mark falls off the credit report. And at almost any point, a cancelled balance can reappear as a tax bill, unless Jake was insolvent when it was forgiven."
+    },
+    {
+      "id": "outro",
+      "kind": "outro",
+      "headline": "SILENCE IS THE EXPENSIVE CHOICE",
+      "subhead": "Ignoring the lawsuit is what turns a bill into a judgment.",
+      "narration": "So here is the whole arc in one breath. Never paying a credit card will not send Jake to jail, because there is no debtors' prison for this kind of debt in America. But ignoring the lawsuit is the thing that transforms a three-thousand-dollar bill into a court judgment, garnished wages, and an unexpected tax surprise. Yes, the debt can expire in seven years. The only real question is how much it costs him on the way there. If you want the next breakdown, exactly what happens when a debt collector sues you, step by step, let us know, and that is the one we will build next."
+    }
+  ],
+  "sources": [
+    {
+      "id": "fdcpa-1692g",
+      "label": "FDCPA — Validation of debts",
+      "citation": "15 U.S.C. § 1692g",
+      "url": "https://www.law.cornell.edu/uscode/text/15/1692g"
+    },
+    {
+      "id": "ccpa-1673",
+      "label": "CCPA — Restriction on garnishment",
+      "citation": "15 U.S.C. § 1673",
+      "url": "https://www.law.cornell.edu/uscode/text/15/1673"
+    },
+    {
+      "id": "cfpb-sol",
+      "label": "CFPB — Statute of limitations on debt",
+      "citation": "CFPB Ask-CFPB #1389",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-statute-of-limitations-on-a-debt-en-1389/"
+    },
+    {
+      "id": "fcra-1681c",
+      "label": "FCRA — Requirements relating to information in consumer reports",
+      "citation": "15 U.S.C. § 1681c",
+      "url": "https://www.law.cornell.edu/uscode/text/15/1681c"
+    },
+    {
+      "id": "usc-61",
+      "label": "IRC — Gross income defined",
+      "citation": "26 U.S.C. § 61(a)",
+      "url": "https://www.law.cornell.edu/uscode/text/26/61"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "fdcpa-1692g",
+      "url": "https://www.law.cornell.edu/uscode/text/15/1692g",
+      "caption": "15 U.S. Code § 1692g — Validation of debts",
+      "find": [
+        "dispute the validity of the debt",
+        "within thirty days"
+      ],
+      "fallback": {
+        "section": "Fair Debt Collection Practices Act · 15 U.S.C. § 1692g",
+        "title": "Validation of debts",
+        "body": "Within five days after the initial communication with a consumer in connection with the collection of any debt, a debt collector shall send the consumer a written notice containing a statement that unless the consumer, within thirty days after receipt of the notice, disputes the validity of the debt, or any portion thereof, the debt will be assumed to be valid by the debt collector.",
+        "highlight": "within thirty days after receipt of the notice, disputes the validity of the debt"
+      },
+      "image": "evidence/fdcpa-1692g.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "fdcpa-1692g-h0",
+          "x": 0.0983,
+          "y": 0.2836,
+          "w": 0.5064,
+          "h": 0.0303
+        }
+      ]
+    },
+    {
+      "id": "ccpa-1673",
+      "url": "https://www.law.cornell.edu/uscode/text/15/1673",
+      "caption": "15 U.S. Code § 1673 — Restriction on garnishment",
+      "find": [
+        "25 per centum of his disposable earnings",
+        "disposable earnings"
+      ],
+      "fallback": {
+        "section": "Consumer Credit Protection Act · 15 U.S.C. § 1673",
+        "title": "Restriction on garnishment",
+        "body": "The maximum part of the aggregate disposable earnings of an individual for any workweek which is subjected to garnishment may not exceed the lesser of 25 per centum of his disposable earnings for that week, or the amount by which his disposable earnings for that week exceed thirty times the Federal minimum hourly wage.",
+        "highlight": "may not exceed the lesser of 25 per centum of his disposable earnings"
+      },
+      "image": "evidence/ccpa-1673.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "ccpa-1673-h0",
+          "x": 0.1156,
+          "y": 0.2476,
+          "w": 0.3098,
+          "h": 0.0103
+        },
+        {
+          "id": "ccpa-1673-h1",
+          "x": 0.1622,
+          "y": 0.219,
+          "w": 0.1122,
+          "h": 0.0103
+        }
+      ]
+    },
+    {
+      "id": "cfpb-sol",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-statute-of-limitations-on-a-debt-en-1389/",
+      "caption": "CFPB — What is a statute of limitations on a debt?",
+      "find": [
+        "statute of limitations",
+        "time-barred"
+      ],
+      "fallback": {
+        "section": "Consumer Financial Protection Bureau",
+        "title": "What is a statute of limitations on a debt?",
+        "body": "A statute of limitations is the limited period of time creditors or debt collectors have to file a lawsuit to recover a debt. Most statutes of limitations fall in the three-to-six years range, although in some jurisdictions they may extend for longer. Once a debt is time-barred, a debt collector can no longer sue you to collect it. In some states, making a payment or acknowledging that you owe the debt may restart the clock on an old debt.",
+        "highlight": "Once a debt is time-barred, a debt collector can no longer sue you to collect it"
+      },
+      "image": "evidence/cfpb-sol.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "cfpb-sol-h0",
+          "x": 0.0821,
+          "y": 0.2073,
+          "w": 0.4786,
+          "h": 0.0259
+        },
+        {
+          "id": "cfpb-sol-h1",
+          "x": 0.0821,
+          "y": 0.2982,
+          "w": 0.4786,
+          "h": 0.0259
+        }
+      ]
+    },
+    {
+      "id": "fcra-1681c",
+      "url": "https://www.law.cornell.edu/uscode/text/15/1681c",
+      "caption": "15 U.S. Code § 1681c — Requirements relating to information in consumer reports",
+      "find": [
+        "seven years",
+        "Accounts placed for collection"
+      ],
+      "fallback": {
+        "section": "Fair Credit Reporting Act · 15 U.S.C. § 1681c",
+        "title": "Requirements relating to information contained in consumer reports",
+        "body": "No consumer reporting agency may make any consumer report containing accounts placed for collection or charged to profit and loss which antedate the report by more than seven years, or civil judgments and other adverse items of information which antedate the report by more than seven years.",
+        "highlight": "which antedate the report by more than seven years"
+      },
+      "image": "evidence/fcra-1681c.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "fcra-1681c-h0",
+          "x": 0.0993,
+          "y": 0.1304,
+          "w": 0.5086,
+          "h": 0.0144
+        },
+        {
+          "id": "fcra-1681c-h1",
+          "x": 0.0993,
+          "y": 0.1572,
+          "w": 0.4876,
+          "h": 0.0094
+        }
+      ]
+    },
+    {
+      "id": "usc-61",
+      "url": "https://www.law.cornell.edu/uscode/text/26/61",
+      "caption": "26 U.S. Code § 61 — Gross income defined",
+      "find": [
+        "gross income means all income",
+        "discharge of indebtedness"
+      ],
+      "fallback": {
+        "section": "Internal Revenue Code · 26 U.S.C. § 61(a)",
+        "title": "Gross income defined",
+        "body": "Except as otherwise provided in this subtitle, gross income means all income from whatever source derived, including (but not limited to) the following items: compensation for services; gross income derived from business; gains derived from dealings in property; interest; rents; royalties; dividends; and income from discharge of indebtedness.",
+        "highlight": "income from discharge of indebtedness"
+      },
+      "image": "evidence/usc-61.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "usc-61-h0",
+          "x": 0.1045,
+          "y": 0.2455,
+          "w": 0.5143,
+          "h": 0.0329
+        },
+        {
+          "id": "usc-61-h1",
+          "x": 0.1221,
+          "y": 0.4911,
+          "w": 0.2147,
+          "h": 0.0118
+        }
+      ]
+    }
+  ]
+}
