@@ -89,85 +89,112 @@ def frac_from_box(box, page_w, page_h):
     }
 
 
+# Robust in-page text locator: finds a phrase inside a single text node and returns
+# its element's absolute document rect. Works where Playwright's get_by_text fails.
+JS_FIND = r"""
+(phrase) => {
+  const norm = (s) => s.toLowerCase().replace(/\s+/g, ' ');
+  const target = norm(phrase).trim();
+  if (!target) return null;
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+  let node;
+  while ((node = walker.nextNode())) {
+    if (!node.textContent) continue;
+    if (norm(node.textContent).includes(target)) {
+      const el = node.parentElement;
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width < 4 || r.height < 4 || r.height > 500) continue;
+      return { x: r.left + window.scrollX, y: r.top + window.scrollY, w: r.width, h: r.height };
+    }
+  }
+  return null;
+}
+"""
+
+
 def capture_item(page, item, out_png: Path) -> list:
     """Screenshot one evidence item; return list of highlight dicts (fractions)."""
     highlights = []
     used_fallback = False
 
+    BLOCK_MARKERS = [
+        "captcha",
+        "are you human",
+        "verify you are",
+        "verify you're",
+        "access denied",
+        "request access",
+        "flagged as potentially automated",
+        "just a moment",
+        "unusual traffic",
+        "enable javascript and cookies",
+        "bot detection",
+        "please complete the security check",
+    ]
+
+    find = item.get("find", [])
+    reason = ""
+
     if "url" in item:
         try:
             page.goto(item["url"], wait_until="domcontentloaded", timeout=30000)
-            page.wait_for_timeout(1200)
+            page.wait_for_timeout(1500)
+            try:
+                page.evaluate("() => window.scrollTo(0, 0)")
+            except Exception:
+                pass
+            body = page.inner_text("body")[:6000] or ""
+            low = body.lower()
+            if any(m in low for m in BLOCK_MARKERS):
+                used_fallback, reason = True, "bot wall / warning page"
+            elif len(body.strip()) < 400:
+                used_fallback, reason = True, "page too short / empty"
         except Exception as exc:
-            print(f"    live fetch failed ({exc}); using fallback")
-            used_fallback = True
+            used_fallback, reason = True, f"load error ({str(exc)[:40]})"
     else:
-        used_fallback = True
+        used_fallback, reason = True, "no url"
+
+    # VERIFY: a live page is only trusted if we can locate the relevant text on it
+    rects = []
+    if not used_fallback:
+        for phrase in find:
+            try:
+                r = page.evaluate(JS_FIND, phrase)
+            except Exception:
+                r = None
+            if r:
+                rects.append(r)
+        if not rects:
+            used_fallback, reason = True, "relevant text not found (cannot verify)"
 
     if used_fallback:
         page.set_content(fallback_html(item.get("fallback", {})), wait_until="load")
         page.wait_for_timeout(300)
-
-    # Determine the crop target (an element) or full page
-    clip_el = None
-    if not used_fallback and item.get("clip"):
         try:
-            clip_el = page.query_selector(item["clip"])
+            r = page.evaluate(
+                "() => { const el=document.getElementById('hl'); if(!el) return null;"
+                " const r=el.getBoundingClientRect();"
+                " return {x:r.left+window.scrollX, y:r.top+window.scrollY, w:r.width, h:r.height}; }"
+            )
         except Exception:
-            clip_el = None
-
-    # Resolve highlight boxes relative to the captured image
-    find = item.get("find", [])
-    if used_fallback:
-        hl = page.query_selector("#hl")
-        targets = [hl] if hl else []
+            r = None
+        rects = [r] if r else []
+        print(f"    FALLBACK card — {reason}")
     else:
-        targets = []
-        for phrase in find:
-            try:
-                loc = page.get_by_text(phrase, exact=False).first
-                if loc.count() > 0:
-                    loc.scroll_into_view_if_needed(timeout=4000)
-                    targets.append(loc.element_handle())
-            except Exception:
-                pass
+        print(f"    VERIFIED live page — {len(rects)} highlight(s)")
 
-    # Screenshot
-    if clip_el is not None:
-        box = clip_el.bounding_box()
-        page.screenshot(path=str(out_png), clip=box)
-        base_x, base_y, base_w, base_h = box["x"], box["y"], box["width"], box["height"]
-        for t in targets:
-            if not t:
-                continue
-            tb = t.bounding_box()
-            if tb:
-                highlights.append(
-                    {
-                        "x": round((tb["x"] - base_x) / base_w, 4),
-                        "y": round((tb["y"] - base_y) / base_h, 4),
-                        "w": round(tb["width"] / base_w, 4),
-                        "h": round(tb["height"] / base_h, 4),
-                    }
-                )
-    else:
-        # Full-page screenshot: measure full content size
-        dims = page.evaluate(
-            "() => ({w: document.documentElement.scrollWidth,"
-            " h: document.documentElement.scrollHeight})"
-        )
-        page.screenshot(path=str(out_png), full_page=True)
-        for t in targets:
-            if not t:
-                continue
-            tb = t.bounding_box()
-            if tb:
-                highlights.append(frac_from_box(tb, dims["w"], dims["h"]))
+    dims = page.evaluate(
+        "() => ({w: document.documentElement.scrollWidth, h: document.documentElement.scrollHeight})"
+    )
+    page.screenshot(path=str(out_png), full_page=True)
 
-    # attach ids/labels
     out = []
-    for i, h in enumerate(highlights):
-        out.append({"id": f"{item['id']}-h{i}", **h})
+    for i, r in enumerate(rects):
+        if not r:
+            continue
+        box = {"x": r["x"], "y": r["y"], "width": r["w"], "height": r["h"]}
+        out.append({"id": f"{item['id']}-h{i}", **frac_from_box(box, dims["w"], dims["h"])})
     return out
 
 

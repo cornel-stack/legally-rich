@@ -1,9 +1,9 @@
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { Character } from "../art/Character";
+import { SmoothCharacter } from "../art/SmoothCharacter";
 import { Prop, PropName } from "../art/props";
 import { RoughShape } from "../lib/rough";
-import { anton, inter, palette } from "../lib/theme";
+import { marker, hand, print, palette } from "../lib/theme";
 import { reveal } from "../lib/util";
 
 /**
@@ -36,36 +36,29 @@ export const ColdOpen: React.FC<{ headline: string; subhead?: string; accent: st
 
   return (
     <AbsoluteFill>
-      {/* floating $ and % doodles for life */}
-      {["$", "%", "$", "%", "$"].map((s, i) => {
-        const x = 160 + i * 360;
-        const y = 180 + Math.sin(frame * 0.05 + i) * 16 + (i % 2) * 60;
-        return <div key={i} style={{ position: "absolute", left: x, top: y, fontFamily: anton, fontSize: 70, color: "#efe7da" }}>{s}</div>;
-      })}
-
       {/* kicker */}
-      <div style={{ position: "absolute", top: 120, left: 0, right: 0, textAlign: "center", opacity: kickerIn }}>
-        <span style={{ fontFamily: inter, fontWeight: 800, letterSpacing: 6, textTransform: "uppercase", fontSize: 40, color: palette.inkSoft }}>
+      <div style={{ position: "absolute", top: 118, left: 0, right: 0, textAlign: "center", opacity: kickerIn }}>
+        <span style={{ fontFamily: print, fontSize: 46, color: palette.inkSoft }}>
           {kicker || "What if you just…"}
         </span>
       </div>
 
       {/* STOP PAYING? */}
-      <div style={{ position: "absolute", top: 180, left: 0, right: 0, textAlign: "center", transform: `scale(${stopPop}) translateX(${shake}px)`, transformOrigin: "center" }}>
-        <span style={{ fontFamily: anton, fontSize: 150, color: palette.red, textShadow: "5px 6px 0 rgba(0,0,0,0.12)" }}>{headline || "STOP PAYING?"}</span>
+      <div style={{ position: "absolute", top: 176, left: 0, right: 0, textAlign: "center", transform: `scale(${stopPop}) translateX(${shake}px)`, transformOrigin: "center" }}>
+        <span style={{ fontFamily: marker, fontWeight: 800, fontSize: 150, color: palette.red }}>{headline || "STOP PAYING?"}</span>
       </div>
 
       <svg width={width} height={1080} style={{ position: "absolute", overflow: "visible" }}>
         {/* character bottom-left, recoils once slashed */}
-        <g transform={`translate(${120 + (1 - enter) * -200}, 360) scale(0.86)`} opacity={enter}>
-          <Character pose={slashed ? "worried" : "present"} expression={slashed ? "shocked" : "happy"} shirt="#3b82f6" />
+        <g transform={`translate(${120 + (1 - enter) * -200}, 360) scale(0.82)`} opacity={enter}>
+          <SmoothCharacter pose={slashed ? "worried" : "present"} expression={slashed ? "shocked" : "happy"} />
         </g>
 
         {/* the credit card (inner g centres the box on the origin) */}
         <g transform={`translate(${cardCx}, ${cardCy}) scale(${1.7 * (0.6 + 0.4 * Math.max(0.001, cardPop))})`}>
           <g transform="translate(-130,-100)">
-            <Prop name="credit-card" draw={cardDraw} accent={accent} />
-            <text x={130} y={215} textAnchor="middle" fontFamily="Anton, sans-serif" fontSize={54} fill={palette.ink} opacity={reveal(frame, 34, 46)}>$3,000</text>
+            <Prop name="credit-card" draw={cardDraw} accent={palette.blue} />
+            <text x={130} y={218} textAnchor="middle" fontFamily={hand} fontWeight={700} fontSize={64} fill={palette.ink} opacity={reveal(frame, 34, 46)}>$3,000</text>
           </g>
         </g>
 

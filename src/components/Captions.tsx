@@ -1,17 +1,16 @@
 import React, { useMemo } from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import { archivo, palette } from "../lib/theme";
+import { print, palette } from "../lib/theme";
 
 type W = { t: number; d: number; w: string };
 
-/** Group words into short phrases, breaking on long pauses or every ~6 words. */
 function chunkWords(words: W[]): W[][] {
   const chunks: W[][] = [];
   let cur: W[] = [];
   for (let i = 0; i < words.length; i++) {
     const prev = words[i - 1];
     const gap = prev ? words[i].t - (prev.t + prev.d) : 0;
-    if (cur.length >= 6 || (cur.length >= 3 && gap > 0.42)) {
+    if (cur.length >= 5 || (cur.length >= 3 && gap > 0.42)) {
       chunks.push(cur);
       cur = [];
     }
@@ -21,71 +20,41 @@ function chunkWords(words: W[]): W[][] {
   return chunks;
 }
 
+/**
+ * Subtle captions — small neat handwriting on a soft chip, low in the frame, so
+ * they support the narration without the heavy TV lower-third we had before.
+ */
 export const Captions: React.FC<{ words: W[]; accent: string }> = ({ words, accent }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const t = frame / fps;
-
   const chunks = useMemo(() => chunkWords(words), [words]);
-  if (chunks.length === 0) return null;
+  if (!chunks.length) return null;
 
-  // active chunk = the one whose time range covers t (or the last that started)
   let active = chunks.findIndex((c) => t >= c[0].t && t <= c[c.length - 1].t + c[c.length - 1].d + 0.25);
-  if (active < 0) {
-    // between chunks: hold the previous one briefly
-    active = chunks.filter((c) => c[0].t <= t).length - 1;
-  }
-  if (active < 0) active = 0;
+  if (active < 0) active = Math.max(0, chunks.filter((c) => c[0].t <= t).length - 1);
   const chunk = chunks[active];
-
-  // fade each chunk in quickly
-  const appear = Math.min(1, Math.max(0, (t - chunk[0].t + 0.12) / 0.18));
+  const appear = Math.min(1, Math.max(0, (t - chunk[0].t + 0.12) / 0.16));
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: 0,
-        right: 0,
-        bottom: 150,
-        display: "flex",
-        justifyContent: "center",
-        padding: "0 160px",
-      }}
-    >
+    <div style={{ position: "absolute", left: 0, right: 0, bottom: 70, display: "flex", justifyContent: "center" }}>
       <div
         style={{
           opacity: appear,
-          transform: `translateY(${(1 - appear) * 14}px)`,
-          background: "rgba(23,18,13,0.86)",
-          borderRadius: 18,
-          padding: "18px 34px",
-          maxWidth: 1400,
-          textAlign: "center",
-          boxShadow: "0 12px 30px rgba(0,0,0,0.25)",
+          transform: `translateY(${(1 - appear) * 10}px)`,
+          background: "rgba(255,255,255,0.9)",
+          border: `2px solid ${palette.ink}`,
+          borderRadius: 16,
+          padding: "8px 26px",
+          boxShadow: "3px 4px 0 rgba(20,20,20,0.12)",
         }}
       >
-        <span
-          style={{
-            fontFamily: archivo,
-            fontSize: 52,
-            lineHeight: 1.18,
-            letterSpacing: 0.3,
-            color: "#fff",
-          }}
-        >
+        <span style={{ fontFamily: print, fontSize: 42, color: palette.ink, lineHeight: 1.1 }}>
           {chunk.map((w, i) => {
             const spoken = t >= w.t;
             const isActive = t >= w.t && t < w.t + w.d + 0.05;
             return (
-              <span
-                key={i}
-                style={{
-                  color: isActive ? accent : "#fff",
-                  opacity: spoken ? 1 : 0.55,
-                  transition: "none",
-                }}
-              >
+              <span key={i} style={{ color: isActive ? accent : palette.ink, opacity: spoken ? 1 : 0.5 }}>
                 {w.w}
                 {i < chunk.length - 1 ? " " : ""}
               </span>

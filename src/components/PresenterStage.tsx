@@ -1,79 +1,102 @@
 import React from "react";
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
-import { Character, Expression, Pose } from "../art/Character";
+import { SmoothCharacter, Expression, Pose } from "../art/SmoothCharacter";
 import { Prop, PropName } from "../art/props";
 import { RoughShape } from "../lib/rough";
-import { anton, inter, palette } from "../lib/theme";
+import { marker, hand, palette } from "../lib/theme";
+import { money } from "../lib/util";
 import { reveal } from "../lib/util";
 import type { RenderScene } from "../schema";
 
+const emphasisFor = (scene: RenderScene): string =>
+  scene.ledgerState === "red" ? palette.red : scene.ledgerState === "gold" ? palette.green : palette.ink;
+
 /**
- * A presenter scene: the doodle character walks in on the left and points at a
- * hand-drawn tool on the right, under a bold headline with a day badge. The prop
- * draws itself on; the character reacts with the directed expression.
+ * Concept scene: the character stands on the left and points a stick at a hand-
+ * drawn tool on the right, under a marker headline. The running balance is a
+ * hand-written note by the tool (red when owed, green when cleared).
  */
-export const PresenterStage: React.FC<{ scene: RenderScene; accent: string }> = ({ scene, accent }) => {
+export const PresenterStage: React.FC<{ scene: RenderScene; accent: string; prevLedger?: number }> = ({ scene, scene: s, accent, prevLedger }) => {
   const frame = useCurrentFrame();
   const { fps, width } = useVideoConfig();
+  const emphasis = emphasisFor(scene);
 
-  const enter = spring({ frame, fps, config: { damping: 12, mass: 0.8, stiffness: 110 } });
-  const charX = interpolate(enter, [0, 1], [-260, 0]);
-
-  const propPop = spring({ frame: frame - 10, fps, config: { damping: 11, mass: 0.7, stiffness: 120 } });
+  const enter = spring({ frame, fps, config: { damping: 13, stiffness: 110 } });
+  const charX = interpolate(enter, [0, 1], [-220, 0]);
+  const propPop = spring({ frame: frame - 10, fps, config: { damping: 11, stiffness: 120 } });
   const propDraw = reveal(frame, 12, 34);
   const headIn = reveal(frame, 2, 18);
-  const badgeIn = reveal(frame, 16, 30);
-  const underlineDraw = reveal(frame, 20, 44);
+  const underlineDraw = reveal(frame, 18, 42);
+  const badgeIn = spring({ frame: frame - 16, fps, config: { damping: 10, stiffness: 130 } });
 
   const hasProp = !!scene.prop;
-  // point at the prop once it is up; otherwise greet
   const pose: Pose = (scene.pose as Pose) || (hasProp ? "point-right" : "present");
   const expression: Expression = (scene.expression as Expression) || "neutral";
-
   const headline = scene.headline ?? "";
-  const ulW = Math.min(1500, headline.length * 42 + 120);
+  const ulW = Math.min(1500, headline.length * 40 + 120);
+  // short labels become a sticky "Day 30" tab by the prop; long ones a subtitle
+  const shortBadge = !!scene.subhead && scene.subhead.length <= 16 && hasProp;
+  const subtitle = !!scene.subhead && !shortBadge ? scene.subhead : null;
+
+  // balance count-up within the scene
+  const balance = scene.ledger != null
+    ? Math.round(interpolate(spring({ frame: frame - 14, fps, config: { damping: 18 } }), [0, 1], [prevLedger ?? scene.ledger, scene.ledger]))
+    : null;
 
   return (
     <AbsoluteFill>
       {/* headline */}
-      <div style={{ position: "absolute", top: 70, left: 0, right: 0, textAlign: "center", opacity: headIn, transform: `translateY(${(1 - headIn) * -18}px)` }}>
+      <div style={{ position: "absolute", top: 64, left: 0, right: 0, textAlign: "center", opacity: headIn, transform: `translateY(${(1 - headIn) * -16}px)` }}>
         <div style={{ display: "inline-block", position: "relative" }}>
-          <div style={{ fontFamily: anton, fontSize: 92, lineHeight: 1.02, color: palette.ink, letterSpacing: 0.5 }}>{headline}</div>
-          <svg width={ulW} height={34} style={{ position: "absolute", left: "50%", bottom: -22, transform: "translateX(-50%)", overflow: "visible" }}>
-            <RoughShape shape={{ type: "line", x1: 8, y1: 16, x2: ulW - 8, y2: 16 }} seed={9} draw={underlineDraw} boil={6} options={{ stroke: accent, strokeWidth: 10, roughness: 2.2, bowing: 2.5 }} />
+          <div style={{ fontFamily: marker, fontWeight: 800, fontSize: 86, lineHeight: 1.0, color: palette.ink }}>{headline}</div>
+          <svg width={ulW} height={30} style={{ position: "absolute", left: "50%", bottom: -18, transform: "translateX(-50%)", overflow: "visible" }}>
+            <RoughShape shape={{ type: "line", x1: 8, y1: 14, x2: ulW - 8, y2: 14 }} seed={9} draw={underlineDraw} options={{ stroke: emphasis, strokeWidth: 9, roughness: 1.4, bowing: 1.8 }} />
           </svg>
         </div>
+        {subtitle && (
+          <div style={{ fontFamily: print, fontSize: 40, color: palette.inkSoft, marginTop: 26, maxWidth: 1200, marginLeft: "auto", marginRight: "auto" }}>{subtitle}</div>
+        )}
       </div>
 
       <svg width={width} height={1080} style={{ position: "absolute", overflow: "visible" }}>
-        {/* character, lower-left */}
-        <g transform={`translate(${110 + charX}, 316) scale(0.92)`} opacity={enter}>
-          <Character pose={pose} expression={expression} shirt="#3b82f6" />
+        {/* character */}
+        <g transform={`translate(${140 + charX}, 326) scale(0.94)`} opacity={enter}>
+          <SmoothCharacter pose={pose} expression={expression} />
         </g>
 
-        {/* prop, centre-right (inner g centres the 260x230 box on the origin) */}
+        {/* prop */}
         {hasProp && (
-          <g transform={`translate(1270, 520) scale(${2.3 * Math.max(0.001, propPop)})`}>
+          <g transform={`translate(1290, 540) scale(${2.25 * Math.max(0.001, propPop)})`}>
             <g transform="translate(-130,-115)">
-              <Prop name={scene.prop as PropName} draw={propDraw} accent={accent} value={scene.propValue} day={scene.propDay} stamp={scene.stamp} />
+              <Prop name={scene.prop as PropName} draw={propDraw} accent={emphasis} value={scene.propValue} day={scene.propDay} stamp={scene.stamp} />
             </g>
           </g>
         )}
       </svg>
 
-      {/* day badge above the prop */}
-      {scene.subhead && (
-        <div style={{ position: "absolute", top: 360, left: 0, right: 0, textAlign: "center", opacity: badgeIn, transform: `scale(${0.8 + badgeIn * 0.2})` }}>
-          <span style={{ display: "inline-block", marginLeft: 360, background: accent, color: "#fff", fontFamily: inter, fontWeight: 900, fontSize: 36, letterSpacing: 2, textTransform: "uppercase", padding: "10px 26px", borderRadius: 40, boxShadow: "0 6px 0 rgba(0,0,0,0.12)" }}>
+      {/* day badge — a marker sticky tab (short labels only) */}
+      {shortBadge && (
+        <div style={{ position: "absolute", top: 320, left: 980, opacity: badgeIn, transform: `scale(${badgeIn}) rotate(-3deg)` }}>
+          <span style={{ display: "inline-block", background: palette.yellow, color: palette.ink, fontFamily: marker, fontWeight: 800, fontSize: 34, padding: "8px 22px", border: `3px solid ${palette.ink}`, borderRadius: 6, boxShadow: "3px 3px 0 rgba(20,20,20,0.18)" }}>
             {scene.subhead}
           </span>
         </div>
       )}
 
-      {/* citation under the prop */}
+      {/* hand-written balance by the prop */}
+      {balance != null && (
+        <div style={{ position: "absolute", top: 760, left: 1080, width: 420, textAlign: "center", opacity: propDraw, transform: "rotate(-4deg)" }}>
+          <span style={{ fontFamily: hand, fontWeight: 700, fontSize: 92, color: emphasis, lineHeight: 0.9 }}>{money(balance)}</span>
+          <div style={{ fontFamily: hand, fontWeight: 700, fontSize: 40, color: palette.inkSoft, marginTop: -6 }}>
+            {scene.ledgerState === "gold" ? "cleared" : "owed"}
+          </div>
+        </div>
+      )}
+
+      {/* citation */}
       {scene.citation && (
-        <div style={{ position: "absolute", top: 860, left: 360, right: 0, textAlign: "center", opacity: propDraw }}>
-          <span style={{ fontFamily: inter, fontWeight: 700, fontSize: 28, color: palette.inkSoft, borderBottom: `3px solid ${accent}`, paddingBottom: 3 }}>§ {scene.citation}</span>
+        <div style={{ position: "absolute", bottom: 150, left: 0, right: 0, textAlign: "center" }}>
+          <span style={{ fontFamily: marker, fontWeight: 700, fontSize: 26, color: palette.inkSoft, borderBottom: `3px solid ${emphasis}`, paddingBottom: 2 }}>§ {scene.citation}</span>
         </div>
       )}
     </AbsoluteFill>

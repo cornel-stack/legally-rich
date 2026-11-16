@@ -60,6 +60,8 @@ export const SceneSchema = z.object({
   ledgerState: z.enum(["neutral", "gold", "red"]).optional(),
   /** Evidence document to show (id into `evidence`). */
   document: z.string().optional(),
+  /** Evidence source id to show as a screenshot shot (non-document scenes). */
+  evidence: z.string().optional(),
   /** Which highlight ids on that document to reveal, in order. */
   highlights: z.array(z.string()).optional(),
   /** Source id (into `sources`) backing this scene's claim. */
@@ -82,6 +84,10 @@ export const SceneSchema = z.object({
   expression: z.string().optional(),
   /** Special art mode for a scene (e.g. "stop-paying" intro). */
   art: z.string().optional(),
+
+  /** Fast-cut shot list. If present, the scene plays as a montage that cuts every
+   *  ~2-3s instead of holding one visual. Auto-generated at build if omitted. */
+  shots: z.array(z.any()).optional(),
 });
 export type Scene = z.infer<typeof SceneSchema>;
 

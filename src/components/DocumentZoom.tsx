@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { Character, Expression } from "../art/Character";
+import { SmoothCharacter, Expression } from "../art/SmoothCharacter";
 import { RoughShape } from "../lib/rough";
-import { anton, inter, palette } from "../lib/theme";
+import { marker, print, inter, palette } from "../lib/theme";
 import { reveal } from "../lib/util";
 import type { Beat, Evidence } from "../schema";
 
@@ -97,20 +97,15 @@ export const DocumentZoom: React.FC<{
     <AbsoluteFill>
       {/* headline */}
       {headline && (
-        <div style={{ position: "absolute", top: 40, left: vpX, width: VPW, textAlign: "center", opacity: pageIn }}>
-          <span style={{ fontFamily: anton, fontSize: 56, color: palette.ink }}>{headline}</span>
+        <div style={{ position: "absolute", top: 36, left: vpX, width: VPW, textAlign: "center", opacity: pageIn }}>
+          <span style={{ fontFamily: marker, fontWeight: 800, fontSize: 52, color: palette.ink }}>{headline}</span>
         </div>
       )}
 
-      {/* character examining the document with a magnifier */}
+      {/* character examining the document, pointer into the page */}
       <svg width={470} height={height} style={{ position: "absolute", left: 0, top: 0, overflow: "visible" }}>
-        <g transform={`translate(${30 + (1 - pageIn) * -160}, 430) scale(0.8)`} opacity={pageIn}>
-          <Character pose="hold-right" expression={(expression as Expression) || "neutral"} shirt="#3b82f6" />
-          {/* magnifier in the raised hand, tilted toward the page */}
-          <g transform="translate(250, 250) scale(0.7) rotate(20)">
-            <RoughShape shape={{ type: "circle", cx: 90, cy: 90, d: 130 }} seed={61} options={{ stroke: accent, strokeWidth: 9, fill: "rgba(255,255,255,0.3)", fillStyle: "solid", roughness: 1.4 }} />
-            <RoughShape shape={{ type: "line", x1: 140, y1: 140, x2: 210, y2: 210 }} seed={62} options={{ stroke: palette.ink, strokeWidth: 16, roughness: 1.2 }} />
-          </g>
+        <g transform={`translate(${-20 + (1 - pageIn) * -160}, 520) scale(0.72)`} opacity={pageIn}>
+          <SmoothCharacter pose="point-right" expression={(expression as Expression) || "neutral"} pointer />
         </g>
       </svg>
 

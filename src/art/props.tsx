@@ -26,7 +26,7 @@ export type PropName =
   | "money"
   | "scales";
 
-const ink = (w = 5, roughness = 1.5) => ({ stroke: INK, strokeWidth: w, roughness, bowing: 1.3 });
+const ink = (w = 5, roughness = 0.8) => ({ stroke: INK, strokeWidth: w, roughness, bowing: 1 });
 
 const CreditCard: React.FC<{ draw: number; accent: string }> = ({ draw, accent }) => (
   <g>
@@ -135,12 +135,16 @@ const Magnifier: React.FC<{ draw: number; accent: string }> = ({ draw, accent })
   </g>
 );
 
-const Shield: React.FC<{ draw: number; accent: string }> = ({ draw, accent }) => (
-  <g>
-    <RoughShape shape={{ type: "linearPath", points: [[130, 24], [226, 56], [210, 150], [130, 214], [50, 150], [34, 56], [130, 24]] }} seed={2} draw={draw} boil={8} options={{ ...ink(7), fill: "#16a34a", fillStyle: "solid" }} />
-    <RoughShape shape={{ type: "linearPath", points: [[86, 116], [120, 152], [182, 78]] }} seed={3} draw={draw} options={{ ...ink(12), stroke: "#fff" }} />
-  </g>
-);
+const Shield: React.FC<{ draw: number; accent: string }> = ({ draw }) => {
+  // reliable concave fill via a plain path, with a hand-drawn outline on top
+  const d = "M130 22 C 170 44, 206 50, 226 56 C 224 110, 214 170, 130 216 C 46 170, 36 110, 34 56 C 54 50, 90 44, 130 22 Z";
+  return (
+    <g opacity={draw}>
+      <path d={d} fill="#2f9e60" stroke="#141414" strokeWidth={7} strokeLinejoin="round" />
+      <path d="M84 116 L118 152 L184 74" fill="none" stroke="#ffffff" strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
+    </g>
+  );
+};
 
 const Hourglass: React.FC<{ draw: number; accent: string }> = ({ draw, accent }) => {
   const frame = useCurrentFrame();

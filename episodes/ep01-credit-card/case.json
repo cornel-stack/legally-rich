@@ -4,7 +4,7 @@
   "title": "What Happens If You Never Pay Your Credit Card?",
   "jurisdiction": "US",
   "character": "Jake",
-  "accentColor": "#ea580c",
+  "accentColor": "#d1483a",
   "voice": "en-US-BrianNeural",
   "rate": "+6%",
   "scenes": [
@@ -47,7 +47,8 @@
       "narration": "Day thirty. The first real consequence arrives: a late fee. Federal rules under Regulation Z let a card issuer charge a late fee that typically lands somewhere between thirty and forty-one dollars for a single missed payment. On top of that, most cardholder agreements let the bank switch on a penalty interest rate, often as high as twenty-nine point nine-nine percent, which now applies to the balance going forward. Jake's total ticks upward, and the interest that balance generates gets a little bigger every single month.",
       "prop": "gauge",
       "propValue": 0.85,
-      "expression": "worried"
+      "expression": "worried",
+      "evidence": "ecfr-1026-52"
     },
     {
       "id": "day60",
@@ -96,7 +97,8 @@
       "narration": "Now, the calls can feel relentless, but the same law puts the collector on a short leash. A debt collector cannot call Jake before eight in the morning or after nine at night. They cannot call him at work once he tells them his employer forbids it. They cannot threaten him with arrest, pretend to be a lawyer or the government, or use obscene language to frighten him. If he sends a single letter telling them to stop contacting him, they legally must, except to confirm there will be no more contact or to tell him they are suing. Most people never find out those rights exist.",
       "prop": "shield",
       "pose": "point-right",
-      "expression": "neutral"
+      "expression": "neutral",
+      "evidence": "cornell-1692c"
     },
     {
       "id": "credit-cost",
@@ -108,7 +110,8 @@
       "ledgerState": "red",
       "narration": "And here is the cost almost nobody adds up. That wrecked credit score follows Jake into every financial decision for years. The next car loan comes with a double-digit interest rate instead of a low one. A mortgage, if he can get one at all, costs tens of thousands more over its life. Landlords quietly reject the application. The power company and the phone carrier demand hundreds of dollars in deposits. In many states, his car insurance premium goes up, purely because of the score. The three-thousand-dollar debt is almost the smallest number in this entire story.",
       "prop": "house",
-      "expression": "worried"
+      "expression": "worried",
+      "evidence": "experian-rates"
     },
     {
       "id": "day180",
@@ -121,7 +124,8 @@
       "narration": "Day one hundred and eighty. Six straight months of missed payments triggers what is called a charge-off, and this is the single most misunderstood word in the whole process. A charge-off does not mean the debt is forgiven, erased, or gone. It is purely an accounting event. The bank is simply declaring the loan a loss on its own internal books so it can clean up its balance sheet for regulators and claim a tax deduction of its own. Jake still owes every last dollar of it. And what the bank very often does next is sell that debt to someone else entirely.",
       "prop": "document",
       "stamp": true,
-      "expression": "worried"
+      "expression": "worried",
+      "evidence": "experian-chargeoff"
     },
     {
       "id": "debtbuyer",
@@ -145,7 +149,8 @@
       "ledgerState": "red",
       "narration": "Because the debt buyer paid so little, they have enormous room to deal. A letter arrives offering to wipe the whole thing out if Jake pays just forty cents on the dollar, maybe thirteen hundred dollars to settle a thirty-three-hundred-dollar account. It looks like mercy, and sometimes it genuinely is the smart move. But there is a hook hiding in it. The two thousand dollars they forgive does not simply vanish. As we are about to see, the government can treat that forgiven amount as income, and tax it. A settlement can quietly create a brand-new bill from a completely different direction.",
       "prop": "money",
-      "expression": "neutral"
+      "expression": "neutral",
+      "evidence": "irs-431"
     },
     {
       "id": "lawsuit",
@@ -157,7 +162,8 @@
       "ledgerState": "red",
       "narration": "If Jake keeps ignoring all of it, the debt buyer's single most powerful option is to take him to court. One ordinary afternoon a process server shows up at his door and hands him a summons. From that exact moment, Jake has a short, strict window, often only twenty to thirty days, to file a written answer with the court. And this is where we reach the most expensive mistake in this entire timeline, the one decision that costs people more than anything else they could possibly do. The mistake is simple, and it feels like the safest option in the world. It is doing nothing at all.",
       "prop": "gavel",
-      "expression": "shocked"
+      "expression": "shocked",
+      "evidence": "pew-courts"
     },
     {
       "id": "default",
@@ -170,7 +176,8 @@
       "narration": "If Jake does not answer that summons, the court enters a default judgment against him. That is an automatic win for the debt buyer, handed to them without any trial, without any evidence being tested, simply because the other side never showed up. Reviews of debt collection lawsuits have found that the overwhelming majority of them end exactly this way, in a quiet default, because the person being sued never filed a single piece of paper. And that judgment is the master key that unlocks the harshest tools of all.",
       "prop": "document",
       "stamp": true,
-      "expression": "worried"
+      "expression": "worried",
+      "evidence": "pew-courts"
     },
     {
       "id": "doc-garnish",
@@ -249,7 +256,8 @@
       "ledgerState": "red",
       "narration": "Here is the twist that can turn a happy ending sour. If the lender ever formally cancels the debt, say they write off three thousand dollars in a charge-off, or they settle for less and forgive the rest, they can file a form with the IRS called a ten ninety-nine C, a cancellation of debt. And to the Internal Revenue Service, forgiven debt is not a gift and it is not nothing. It is income, the same as a paycheck. That means Jake can be taxed on the three thousand dollars that he thought was wiped away for good. In a twenty-two percent bracket, that is a surprise tax bill of around six hundred and sixty dollars, arriving in the mail a full year after he thought the whole ordeal was finally over.",
       "prop": "document",
-      "expression": "shocked"
+      "expression": "shocked",
+      "evidence": "irs-431"
     },
     {
       "id": "doc-61",
@@ -285,7 +293,8 @@
       "ledgerState": "gold",
       "narration": "But even that tax bill has a legal escape hatch built right into the code. Section one hundred and eight says that if Jake was insolvent at the moment the debt was cancelled, meaning his total debts were larger than everything he owned, he can exclude that forgiven amount from his taxable income. A lot of people who default on their cards actually qualify for this, because they were deep underwater when the debt was wiped. The catch is that it is never automatic. It has to be claimed, in the right way, on the tax return.",
       "prop": "shield",
-      "expression": "happy"
+      "expression": "happy",
+      "evidence": "cornell-108"
     },
     {
       "id": "jurisdiction",
@@ -368,9 +377,9 @@
         {
           "id": "fdcpa-1692g-h0",
           "x": 0.0983,
-          "y": 0.2836,
-          "w": 0.5064,
-          "h": 0.0303
+          "y": 0.2784,
+          "w": 0.5032,
+          "h": 0.0182
         }
       ]
     },
@@ -393,13 +402,6 @@
       "highlights": [
         {
           "id": "ccpa-1673-h0",
-          "x": 0.1156,
-          "y": 0.2476,
-          "w": 0.3098,
-          "h": 0.0103
-        },
-        {
-          "id": "ccpa-1673-h1",
           "x": 0.1622,
           "y": 0.219,
           "w": 0.1122,
@@ -460,16 +462,9 @@
         {
           "id": "fcra-1681c-h0",
           "x": 0.0993,
-          "y": 0.1304,
-          "w": 0.5086,
-          "h": 0.0144
-        },
-        {
-          "id": "fcra-1681c-h1",
-          "x": 0.0993,
-          "y": 0.1572,
-          "w": 0.4876,
-          "h": 0.0094
+          "y": 0.1324,
+          "w": 0.4941,
+          "h": 0.0133
         }
       ]
     },
@@ -503,6 +498,285 @@
           "y": 0.4911,
           "w": 0.2147,
           "h": 0.0118
+        }
+      ]
+    },
+    {
+      "id": "ecfr-1026-52",
+      "url": "https://www.ecfr.gov/current/title-12/part-1026/section-1026.52",
+      "caption": "12 CFR § 1026.52 — Limitations on fees (Regulation Z)",
+      "find": [
+        "late payment",
+        "safe harbor"
+      ],
+      "fallback": {
+        "section": "Regulation Z · 12 CFR § 1026.52",
+        "title": "Limitations on fees",
+        "body": "A card issuer may impose a fee for violating the terms of an account only if the dollar amount of the fee is consistent with the safe harbor amounts set by the Bureau, or with a cost analysis. The safe-harbor late-payment fee amounts are adjusted periodically.",
+        "highlight": "a fee for violating the terms"
+      },
+      "image": "evidence/ecfr-1026-52.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "ecfr-1026-52-h0",
+          "x": 0.1266,
+          "y": 0.0588,
+          "w": 0.1266,
+          "h": 0.0094
+        }
+      ]
+    },
+    {
+      "id": "experian-chargeoff",
+      "url": "https://www.experian.com/blogs/ask-experian/what-is-a-charge-off/",
+      "caption": "Experian — What Is a Charge-Off?",
+      "find": [
+        "charge-off",
+        "still owe",
+        "seven years"
+      ],
+      "fallback": {
+        "section": "Experian · Ask Experian",
+        "title": "What Is a Charge-Off?",
+        "body": "A charge-off means a creditor has written off your account as a loss, but you still owe the debt. The account can be sold to a debt collector, and a charged-off account generally remains on your credit report for seven years from the original delinquency date.",
+        "highlight": "you still owe the debt"
+      },
+      "image": "evidence/experian-chargeoff.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "experian-chargeoff-h0",
+          "x": 0.1157,
+          "y": 0.0381,
+          "w": 0.499,
+          "h": 0.0081
+        },
+        {
+          "id": "experian-chargeoff-h1",
+          "x": 0.1386,
+          "y": 0.2643,
+          "w": 0.2679,
+          "h": 0.0027
+        }
+      ]
+    },
+    {
+      "id": "pew-courts",
+      "url": "https://www.pewtrusts.org/en/research-and-analysis/reports/2020/05/how-debt-collectors-are-transforming-the-business-of-state-courts",
+      "caption": "Pew — How Debt Collectors Are Transforming State Courts (2020)",
+      "find": [
+        "default judgment",
+        "debt collection",
+        "more than"
+      ],
+      "fallback": {
+        "section": "The Pew Charitable Trusts · 2020",
+        "title": "How Debt Collectors Are Transforming the Business of State Courts",
+        "body": "Debt collection is now the most common type of civil court case. More than 70 percent of these lawsuits end in default judgments against defendants who never responded — often because they did not know they had been sued or did not know they had defenses.",
+        "highlight": "end in default judgments"
+      },
+      "image": "evidence/pew-courts.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "pew-courts-h0",
+          "x": 0.2312,
+          "y": 0.1806,
+          "w": 0.1691,
+          "h": 0.0161
+        }
+      ]
+    },
+    {
+      "id": "cornell-1692c",
+      "url": "https://www.law.cornell.edu/uscode/text/15/1692c",
+      "caption": "15 U.S. Code § 1692c — Communication in connection with debt collection",
+      "find": [
+        "convenient",
+        "8 o'clock",
+        "place of employment"
+      ],
+      "fallback": {
+        "section": "FDCPA · 15 U.S.C. § 1692c",
+        "title": "Communication in connection with debt collection",
+        "body": "Without the prior consent of the consumer, a debt collector may not communicate at any unusual time or place — in particular, before 8 o'clock antemeridian and after 9 o'clock postmeridian — or at the consumer's place of employment if the collector knows the employer prohibits it.",
+        "highlight": "before 8 o'clock antemeridian and after 9 o'clock postmeridian"
+      },
+      "image": "evidence/cornell-1692c.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "cornell-1692c-h0",
+          "x": 0.0983,
+          "y": 0.2742,
+          "w": 0.505,
+          "h": 0.0411
+        },
+        {
+          "id": "cornell-1692c-h1",
+          "x": 0.0983,
+          "y": 0.377,
+          "w": 0.5079,
+          "h": 0.0192
+        }
+      ]
+    },
+    {
+      "id": "irs-431",
+      "url": "https://www.irs.gov/taxtopics/tc431",
+      "caption": "IRS — Topic No. 431, Canceled Debt",
+      "find": [
+        "canceled debt",
+        "gross income",
+        "ordinary income",
+        "1099-C"
+      ],
+      "fallback": {
+        "section": "Internal Revenue Service · Topic No. 431",
+        "title": "Canceled debt — is it taxable or not?",
+        "body": "In general, if your debt is canceled, forgiven, or discharged for less than the amount you owe, the amount of the canceled debt is taxable and you must report it on your tax return. A lender that cancels $600 or more of debt must issue Form 1099-C.",
+        "highlight": "the amount of the canceled debt is taxable"
+      },
+      "image": "evidence/irs-431.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "irs-431-h0",
+          "x": 0.2119,
+          "y": 0.0575,
+          "w": 0.2232,
+          "h": 0.0065
+        },
+        {
+          "id": "irs-431-h1",
+          "x": 0.3018,
+          "y": 0.3355,
+          "w": 0.6054,
+          "h": 0.0296
+        },
+        {
+          "id": "irs-431-h2",
+          "x": 0.3018,
+          "y": 0.2629,
+          "w": 0.6054,
+          "h": 0.0443
+        },
+        {
+          "id": "irs-431-h3",
+          "x": 0.5508,
+          "y": 0.2158,
+          "w": 0.1619,
+          "h": 0.0065
+        }
+      ]
+    },
+    {
+      "id": "cornell-108",
+      "url": "https://www.law.cornell.edu/uscode/text/26/108",
+      "caption": "26 U.S. Code § 108 — Income from discharge of indebtedness",
+      "find": [
+        "insolvent",
+        "title 11",
+        "discharge of indebtedness"
+      ],
+      "fallback": {
+        "section": "Internal Revenue Code · 26 U.S.C. § 108",
+        "title": "Income from discharge of indebtedness",
+        "body": "Gross income does not include any amount which would be includible in gross income by reason of the discharge of indebtedness of the taxpayer if the discharge occurs when the taxpayer is insolvent.",
+        "highlight": "if the discharge occurs when the taxpayer is insolvent"
+      },
+      "image": "evidence/cornell-108.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "cornell-108-h0",
+          "x": 0.3486,
+          "y": 0.0362,
+          "w": 0.0451,
+          "h": 0.001
+        },
+        {
+          "id": "cornell-108-h1",
+          "x": 0.2624,
+          "y": 0.0341,
+          "w": 0.0601,
+          "h": 0.001
+        },
+        {
+          "id": "cornell-108-h2",
+          "x": 0.0464,
+          "y": 0.0139,
+          "w": 0.5976,
+          "h": 0.0043
+        }
+      ]
+    },
+    {
+      "id": "justia-midland",
+      "url": "https://en.wikipedia.org/wiki/Midland_Funding,_LLC_v._Johnson",
+      "caption": "Midland Funding, LLC v. Johnson, 581 U.S. 224 (2017)",
+      "find": [
+        "statute of limitations",
+        "proof of claim",
+        "Fair Debt Collection"
+      ],
+      "fallback": {
+        "section": "Supreme Court of the United States · 2017",
+        "title": "Midland Funding, LLC v. Johnson",
+        "body": "The case concerned a debt buyer that filed a proof of claim in bankruptcy on a credit-card debt for which the state statute of limitations had long run. The dispute turned on whether trying to collect a stale, time-barred debt violates the Fair Debt Collection Practices Act.",
+        "highlight": "the state statute of limitations had long run"
+      },
+      "image": "evidence/justia-midland.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "justia-midland-h0",
+          "x": 0.0829,
+          "y": 0.2739,
+          "w": 0.101,
+          "h": 0.0094
+        },
+        {
+          "id": "justia-midland-h1",
+          "x": 0.5436,
+          "y": 0.2946,
+          "w": 0.2115,
+          "h": 0.0556
+        },
+        {
+          "id": "justia-midland-h2",
+          "x": 0.5436,
+          "y": 0.2946,
+          "w": 0.2115,
+          "h": 0.0556
+        }
+      ]
+    },
+    {
+      "id": "experian-rates",
+      "url": "https://www.experian.com/blogs/ask-experian/how-does-your-credit-score-affect-your-interest-rate/",
+      "caption": "Experian — How Your Credit Score Affects Your Interest Rate",
+      "find": [
+        "interest rate",
+        "credit score",
+        "lower"
+      ],
+      "fallback": {
+        "section": "Experian · Ask Experian",
+        "title": "How Your Credit Score Affects Your Interest Rate",
+        "body": "Lenders use credit scores to set interest rates. Borrowers with higher scores generally qualify for lower rates, while a damaged score can add thousands of dollars in interest over the life of a car loan or mortgage.",
+        "highlight": "a damaged score can add thousands of dollars in interest"
+      },
+      "image": "evidence/experian-rates.png",
+      "accessed": "2026-11-16",
+      "highlights": [
+        {
+          "id": "experian-rates-h0",
+          "x": 0.8513,
+          "y": 0.4076,
+          "w": 0.0847,
+          "h": 0.0103
         }
       ]
     }

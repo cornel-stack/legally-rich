@@ -66,6 +66,85 @@ function resolveAnchor(anchor, words) {
   return idx >= 0 ? words[idx].t : 0;
 }
 
+const RED = "#d1483a";
+const GREEN = "#2f9e60";
+
+/**
+ * Turn a scene into ~3 CONTEXTUAL shots: the claim (a drawn concept), the
+ * evidence (a real highlighted screenshot), and the consequence (the number).
+ * Cut times snap to the nearest spoken word. Character-only scenes return
+ * undefined and fall back to the presenter layout.
+ */
+function genShots(scene, words, durFrames, evMap) {
+  const durSec = durFrames / FPS;
+  const headline = scene.headline ?? "";
+  const color = scene.ledgerState === "gold" ? GREEN : RED;
+  const evId = scene.document || scene.evidence; // the source backing this scene
+  const ev = evId ? evMap[evId] : null;
+  const nHl = ev && ev.highlights ? ev.highlights.length : 0;
+
+  // character-only scenes (intro, jurisdiction, recap, outro): still give 3 beats
+  if (!scene.prop && !ev && scene.ledger == null) {
+    const beats = [
+      { kind: "headline", text: headline, pose: "present", expr: scene.expression || "happy" },
+      { kind: "bubble", text: scene.subhead || headline, pose: "point-right", expr: "neutral" },
+      { kind: "stamp", text: headline.length <= 22 ? headline : (scene.subhead || headline).slice(0, 22) },
+    ];
+    const fr = [0, 0.38, 0.72];
+    let lp = -999;
+    beats.forEach((s, i) => {
+      const target = fr[i] * durSec;
+      let best = target, bd = 1e9;
+      for (const w of words) { const d = Math.abs(w.t - target); if (d < bd) { bd = d; best = w.t; } }
+      let st = i === 0 ? 0 : best; if (st - lp < 1.4) st = lp + 1.4; lp = st;
+      s.start = Math.round(st * FPS);
+    });
+    for (let i = 0; i < beats.length; i++) beats[i].dur = (i < beats.length - 1 ? beats[i + 1].start : durFrames) - beats[i].start;
+    return beats;
+  }
+
+  const numberShot = () => ({ kind: "number", value: scene.ledger, label: scene.ledgerState === "gold" ? "cleared" : "owed", color });
+  const shots = [];
+  let usedNumber = false;
+  const pushNumber = () => { if (scene.ledger != null) { shots.push(numberShot()); usedNumber = true; } };
+
+  // Shot 1 — the CLAIM
+  if (scene.prop) shots.push({ kind: "prop", prop: scene.prop, value: scene.propValue, label: scene.subhead, stamp: scene.stamp });
+  else shots.push({ kind: "headline", text: headline });
+
+  // Shot 2 — the EVIDENCE (real screenshot), or the number if no source
+  if (ev) shots.push({ kind: "doc", doc: evId, hl: 0, note: scene.evidenceNote });
+  else pushNumber();
+  if (shots.length < 2) shots.push({ kind: "cite", text: scene.citation || headline });
+
+  // Shot 3 — the CONSEQUENCE (no duplicate shot kinds)
+  if (ev && nHl > 1) shots.push({ kind: "doc", doc: evId, hl: 1, note: scene.evidenceNote });
+  else if (!usedNumber) pushNumber();
+  else if (scene.citation) shots.push({ kind: "cite", text: scene.citation });
+  else shots.push({ kind: "stamp", text: headline.length <= 22 ? headline : (scene.subhead || headline) });
+
+  // optional Shot 4 — the number after a second evidence detail
+  if (ev && nHl > 1 && !usedNumber) pushNumber();
+  shots.length = Math.min(shots.length, 4);
+
+  // distribute & snap to words
+  const fracs = shots.length === 3 ? [0, 0.4, 0.72] : [0, 0.32, 0.56, 0.8];
+  let last = -999;
+  shots.forEach((s, i) => {
+    const target = fracs[i] * durSec;
+    let best = target, bd = 1e9;
+    for (const w of words) { const d = Math.abs(w.t - target); if (d < bd) { bd = d; best = w.t; } }
+    let st = i === 0 ? 0 : best;
+    if (st - last < 1.4) st = last + 1.4;
+    last = st;
+    s.start = Math.round(st * FPS);
+  });
+  for (let i = 0; i < shots.length; i++) shots[i].dur = (i < shots.length - 1 ? shots[i + 1].start : durFrames) - shots[i].start;
+  return shots.filter((s) => s.dur > 3);
+}
+
+const evMap = Object.fromEntries((caseData.evidence ?? []).map((e) => [e.id, e]));
+
 let frameCursor = 0;
 const scenes = caseData.scenes.map((scene) => {
   const mp3 = join(epDir, "audio", `${scene.id}.mp3`);
@@ -81,6 +160,15 @@ const scenes = caseData.scenes.map((scene) => {
   // keep beats in chronological order
   beats.sort((a, b) => a.at - b.at);
 
+  // fast-cut shot list (hand-authored shots win; else auto-generate). Cold-open
+  // keeps its bespoke animated intro.
+  const shots =
+    scene.kind === "cold-open"
+      ? undefined
+      : scene.shots && scene.shots.length
+      ? scene.shots
+      : genShots(scene, words, durationInFrames, evMap);
+
   const rendered = {
     ...scene,
     audio: `audio/${basename(mp3)}`,
@@ -88,6 +176,7 @@ const scenes = caseData.scenes.map((scene) => {
     durationInFrames,
     words,
     beats,
+    shots,
     startFrame: frameCursor,
   };
   frameCursor += durationInFrames;

@@ -4,7 +4,7 @@ import { Backdrop } from "./components/Backdrop";
 import { Hud } from "./components/Hud";
 import { Captions } from "./components/Captions";
 import { Scene } from "./components/Scene";
-import { inter, palette } from "./lib/theme";
+import { print, palette } from "./lib/theme";
 import type { Manifest, RenderScene } from "./schema";
 
 /** Fades scene content in at its start and out at its end for soft cuts. */
@@ -45,13 +45,12 @@ export const Episode: React.FC<{ manifest: Manifest }> = ({ manifest }) => {
       <div
         style={{
           position: "absolute",
-          right: 34,
-          bottom: 28,
-          fontFamily: inter,
-          fontWeight: 700,
-          fontSize: 20,
+          right: 40,
+          bottom: 30,
+          fontFamily: print,
+          fontSize: 24,
           color: palette.inkSoft,
-          opacity: 0.7,
+          opacity: 0.75,
         }}
       >
         Educational — not legal advice

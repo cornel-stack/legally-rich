@@ -10,3 +10,4 @@ episodes/*/render-manifest.json
 # Large source PDFs kept out of git; evidence PNGs are committed for reproducibility
 *.xlsx
 Legally-Rich-Channel-Plan*.pdf
+.refs/

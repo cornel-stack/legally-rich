@@ -1,44 +1,16 @@
 import React from "react";
-import { interpolate, useCurrentFrame } from "remotion";
-import { anton, inter, palette } from "../lib/theme";
-import { money } from "../lib/util";
+import { useCurrentFrame } from "remotion";
+import { marker, print, palette } from "../lib/theme";
 import type { RenderScene } from "../schema";
 
-const stateColor: Record<string, string> = {
-  neutral: palette.neutral,
-  gold: palette.gold,
-  red: palette.red,
-};
-
-export const Hud: React.FC<{
-  scenes: RenderScene[];
-  series: string;
-  jurisdiction: string;
-  accent: string;
-}> = ({ scenes, series, jurisdiction, accent }) => {
+/**
+ * Minimal, on-style chrome: a small hand-written channel wordmark and a chapter
+ * progress tick row. The running balance now lives in-scene as a hand-written
+ * note, so there is no UI pill competing with the art.
+ */
+export const Hud: React.FC<{ scenes: RenderScene[]; series: string; jurisdiction: string; accent: string }> = ({ scenes, jurisdiction, accent }) => {
   const frame = useCurrentFrame();
 
-  // --- running ledger ---
-  const ledgerKeys = scenes
-    .filter((s) => s.ledger != null)
-    .map((s) => ({ f: s.startFrame as number, v: s.ledger as number, state: s.ledgerState ?? "neutral" }));
-
-  let value = 0;
-  let color = palette.neutral;
-  let showLedger = false;
-  if (ledgerKeys.length) {
-    const idx = Math.max(0, ledgerKeys.filter((k) => k.f <= frame).length - 1);
-    const cur = ledgerKeys[idx];
-    showLedger = frame >= ledgerKeys[0].f;
-    const prev = idx > 0 ? ledgerKeys[idx - 1] : { v: 0, f: cur.f };
-    value = interpolate(frame, [cur.f, cur.f + 16], [prev.v, cur.v], {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-    });
-    color = stateColor[cur.state] ?? palette.neutral;
-  }
-
-  // --- chapter ladder ---
   const chapters = scenes.map((s) => s.chapter).filter((c): c is number => c != null);
   const totalChapters = chapters.length ? Math.max(...chapters) : 0;
   const activeScene = [...scenes].reverse().find((s) => (s.startFrame as number) <= frame);
@@ -46,71 +18,18 @@ export const Hud: React.FC<{
 
   return (
     <>
-      {/* top-left: series chip + jurisdiction */}
-      <div style={{ position: "absolute", top: 46, left: 70, display: "flex", gap: 14, alignItems: "center" }}>
-        <div
-          style={{
-            background: accent,
-            color: "#fff",
-            fontFamily: inter,
-            fontWeight: 800,
-            fontSize: 24,
-            letterSpacing: 1.5,
-            textTransform: "uppercase",
-            padding: "8px 18px",
-            borderRadius: 8,
-          }}
-        >
-          {series}
-        </div>
-        <div
-          style={{
-            fontFamily: inter,
-            fontWeight: 700,
-            fontSize: 22,
-            color: palette.inkSoft,
-            border: `2px solid ${palette.inkSoft}`,
-            padding: "6px 14px",
-            borderRadius: 8,
-          }}
-        >
-          {jurisdiction}
-        </div>
+      {/* channel wordmark, top-left */}
+      <div style={{ position: "absolute", top: 40, left: 64, display: "flex", alignItems: "baseline", gap: 12 }}>
+        <span style={{ fontFamily: marker, fontWeight: 800, fontSize: 34, color: palette.ink }}>Legally Rich</span>
+        <span style={{ fontFamily: print, fontSize: 24, color: palette.inkSoft }}>· {jurisdiction}</span>
       </div>
 
-      {/* bottom-left: chapter ladder (above the footer) */}
+      {/* chapter ticks, bottom-left */}
       {totalChapters > 0 && (
-        <div style={{ position: "absolute", bottom: 34, left: 70, display: "flex", gap: 10, alignItems: "center" }}>
-          {Array.from({ length: totalChapters }).map((_, i) => {
-            const done = i < curChapter;
-            return (
-              <div key={i} style={{ width: done ? 34 : 22, height: 10, borderRadius: 6, background: done ? accent : "rgba(23,18,13,0.14)" }} />
-            );
-          })}
-        </div>
-      )}
-
-      {/* ledger strip: running balance, top-right */}
-      {showLedger && (
-        <div
-          style={{
-            position: "absolute",
-            top: 42,
-            right: 66,
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-            background: "#fff",
-            border: `3px solid ${color}`,
-            borderRadius: 14,
-            padding: "8px 20px",
-            boxShadow: "0 5px 0 rgba(0,0,0,0.08)",
-          }}
-        >
-          <span style={{ fontFamily: inter, fontWeight: 800, fontSize: 17, letterSpacing: 1, color: palette.inkSoft, textTransform: "uppercase" }}>
-            Balance
-          </span>
-          <span style={{ fontFamily: anton, fontSize: 40, color, lineHeight: 1 }}>{money(value)}</span>
+        <div style={{ position: "absolute", bottom: 34, left: 64, display: "flex", gap: 9, alignItems: "center" }}>
+          {Array.from({ length: totalChapters }).map((_, i) => (
+            <div key={i} style={{ width: i < curChapter ? 30 : 18, height: 8, borderRadius: 5, background: i < curChapter ? accent : "rgba(20,20,20,0.12)" }} />
+          ))}
         </div>
       )}
     </>
