@@ -70,72 +70,68 @@ const RED = "#d1483a";
 const GREEN = "#2f9e60";
 
 /**
- * Turn a scene into ~3 CONTEXTUAL shots: the claim (a drawn concept), the
- * evidence (a real highlighted screenshot), and the consequence (the number).
- * Cut times snap to the nearest spoken word. Character-only scenes return
- * undefined and fall back to the presenter layout.
+ * Turn a scene into FAST CUTS (~2.3s each, Casual-Finance pace). Every scene —
+ * including the intro — becomes a run of short cut-scenes, each animating a few
+ * things. Cuts are built from the scene's own assets (prop, evidence highlights,
+ * number, citation, stamps) and sequenced to avoid adjacent repeats.
  */
+const CUT_SEC = 2.3;
+
 function genShots(scene, words, durFrames, evMap) {
   const durSec = durFrames / FPS;
   const headline = scene.headline ?? "";
   const color = scene.ledgerState === "gold" ? GREEN : RED;
-  const evId = scene.document || scene.evidence; // the source backing this scene
+  const evId = scene.document || scene.evidence;
   const ev = evId ? evMap[evId] : null;
   const nHl = ev && ev.highlights ? ev.highlights.length : 0;
+  const numberShot = () => ({ kind: "number", value: scene.ledger, label: scene.ledgerState === "gold" ? "cleared" : "owed", color });
+  const stampText = headline.length <= 22 ? headline : (scene.subhead && scene.subhead.length <= 22 ? scene.subhead : headline.slice(0, 20));
 
-  // character-only scenes (intro, jurisdiction, recap, outro): still give 3 beats
-  if (!scene.prop && !ev && scene.ledger == null) {
-    const beats = [
-      { kind: "headline", text: headline, pose: "present", expr: scene.expression || "happy" },
-      { kind: "bubble", text: scene.subhead || headline, pose: "point-right", expr: "neutral" },
-      { kind: "stamp", text: headline.length <= 22 ? headline : (scene.subhead || headline).slice(0, 22) },
-    ];
-    const fr = [0, 0.38, 0.72];
-    let lp = -999;
-    beats.forEach((s, i) => {
-      const target = fr[i] * durSec;
-      let best = target, bd = 1e9;
-      for (const w of words) { const d = Math.abs(w.t - target); if (d < bd) { bd = d; best = w.t; } }
-      let st = i === 0 ? 0 : best; if (st - lp < 1.4) st = lp + 1.4; lp = st;
-      s.start = Math.round(st * FPS);
-    });
-    for (let i = 0; i < beats.length; i++) beats[i].dur = (i < beats.length - 1 ? beats[i + 1].start : durFrames) - beats[i].start;
-    return beats;
+  const N = Math.max(3, Math.round(durSec / CUT_SEC));
+
+  // --- establishing beats (contextual order) + a rotation pool to fill the rest ---
+  let lead = [];
+  let pool = [];
+
+  if (scene.kind === "cold-open") {
+    lead = [{ kind: "number", value: 3000, label: "one card", color: RED }, { kind: "cardx" }, { kind: "stamp", text: headline || "STOP PAYING?" }, { kind: "teaser" }];
+    pool = [{ kind: "cardx" }, { kind: "stamp", text: "7 YEARS?" }, { kind: "teaser" }, { kind: "number", value: 3000, label: "one card", color: RED }, { kind: "stamp", text: headline || "STOP PAYING?" }];
+  } else if (!scene.prop && !ev && scene.ledger == null) {
+    // character-only scene
+    lead = [{ kind: "headline", text: headline, pose: "present", expr: scene.expression || "happy" }, { kind: "bubble", text: scene.subhead || headline, pose: "point-right", expr: "neutral" }, { kind: "stamp", text: stampText }];
+    pool = [{ kind: "bubble", text: scene.subhead || headline, pose: "point-right" }, { kind: "stamp", text: stampText }, { kind: "headline", text: headline, pose: "shrug" }];
+  } else {
+    if (scene.prop) lead.push({ kind: "prop", prop: scene.prop, value: scene.propValue, label: scene.subhead, stamp: scene.stamp });
+    else lead.push({ kind: "headline", text: headline });
+    if (ev) lead.push({ kind: "doc", doc: evId, hl: 0, note: scene.evidenceNote });
+    if (scene.ledger != null) lead.push(numberShot());
+
+    if (ev) for (let i = 0; i < nHl; i++) pool.push({ kind: "doc", doc: evId, hl: i, note: scene.evidenceNote });
+    if (scene.ledger != null) pool.push(numberShot());
+    if (scene.citation) pool.push({ kind: "cite", text: scene.citation });
+    pool.push({ kind: "stamp", text: stampText });
+    if (scene.prop) pool.push({ kind: "prop", prop: scene.prop, value: scene.propValue });
+  }
+  if (pool.length === 0) pool = [{ kind: "headline", text: headline }];
+
+  // build sequence: lead, then cycle pool skipping adjacent duplicates
+  const shots = [...lead];
+  let pi = 0, guard = 0;
+  const sig = (s) => s.kind + (s.hl ?? "") + (s.text ?? "") + (s.prop ?? "");
+  while (shots.length < N && guard++ < 200) {
+    const cand = pool[pi % pool.length]; pi++;
+    if (shots.length && sig(shots[shots.length - 1]) === sig(cand)) continue;
+    shots.push({ ...cand });
   }
 
-  const numberShot = () => ({ kind: "number", value: scene.ledger, label: scene.ledgerState === "gold" ? "cleared" : "owed", color });
-  const shots = [];
-  let usedNumber = false;
-  const pushNumber = () => { if (scene.ledger != null) { shots.push(numberShot()); usedNumber = true; } };
-
-  // Shot 1 — the CLAIM
-  if (scene.prop) shots.push({ kind: "prop", prop: scene.prop, value: scene.propValue, label: scene.subhead, stamp: scene.stamp });
-  else shots.push({ kind: "headline", text: headline });
-
-  // Shot 2 — the EVIDENCE (real screenshot), or the number if no source
-  if (ev) shots.push({ kind: "doc", doc: evId, hl: 0, note: scene.evidenceNote });
-  else pushNumber();
-  if (shots.length < 2) shots.push({ kind: "cite", text: scene.citation || headline });
-
-  // Shot 3 — the CONSEQUENCE (no duplicate shot kinds)
-  if (ev && nHl > 1) shots.push({ kind: "doc", doc: evId, hl: 1, note: scene.evidenceNote });
-  else if (!usedNumber) pushNumber();
-  else if (scene.citation) shots.push({ kind: "cite", text: scene.citation });
-  else shots.push({ kind: "stamp", text: headline.length <= 22 ? headline : (scene.subhead || headline) });
-
-  // optional Shot 4 — the number after a second evidence detail
-  if (ev && nHl > 1 && !usedNumber) pushNumber();
-  shots.length = Math.min(shots.length, 4);
-
-  // distribute & snap to words
-  const fracs = shots.length === 3 ? [0, 0.4, 0.72] : [0, 0.32, 0.56, 0.8];
+  // distribute cut times evenly, snapped to nearest spoken word, min 1.1s apart
   let last = -999;
   shots.forEach((s, i) => {
-    const target = fracs[i] * durSec;
+    const target = (i / shots.length) * durSec;
     let best = target, bd = 1e9;
     for (const w of words) { const d = Math.abs(w.t - target); if (d < bd) { bd = d; best = w.t; } }
     let st = i === 0 ? 0 : best;
-    if (st - last < 1.4) st = last + 1.4;
+    if (st - last < 1.1) st = last + 1.1;
     last = st;
     s.start = Math.round(st * FPS);
   });
@@ -160,14 +156,9 @@ const scenes = caseData.scenes.map((scene) => {
   // keep beats in chronological order
   beats.sort((a, b) => a.at - b.at);
 
-  // fast-cut shot list (hand-authored shots win; else auto-generate). Cold-open
-  // keeps its bespoke animated intro.
+  // fast-cut shot list (hand-authored shots win; else auto-generate)
   const shots =
-    scene.kind === "cold-open"
-      ? undefined
-      : scene.shots && scene.shots.length
-      ? scene.shots
-      : genShots(scene, words, durationInFrames, evMap);
+    scene.shots && scene.shots.length ? scene.shots : genShots(scene, words, durationInFrames, evMap);
 
   const rendered = {
     ...scene,

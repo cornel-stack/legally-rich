@@ -42,13 +42,24 @@ const HeadlineShot: React.FC<{ shot: Shot; f: number; emphasis: string }> = ({ s
   const ul = reveal(f, 6, 18);
   const text = shot.text ?? "";
   const w = Math.min(AREA.w, text.length * 44 + 80);
+  const marks = easeOutBack(reveal(f, 8, 18)); // 3: emphasis ticks pop
   return (
-    <div style={{ position: "absolute", left: AREA.x, top: cy - 90, width: AREA.w, textAlign: "center", transform: `scale(${pop})` }}>
-      <div style={{ fontFamily: marker, fontWeight: 800, fontSize: 96, lineHeight: 1.0, color: palette.ink }}>{text}</div>
-      <svg width={w} height={28} style={{ overflow: "visible", marginTop: 6 }}>
-        <RoughShape shape={{ type: "line", x1: 8, y1: 14, x2: w - 8, y2: 14 }} seed={4} draw={ul} options={{ stroke: emphasis, strokeWidth: 10, roughness: 1.3, bowing: 2 }} />
+    <>
+      <div style={{ position: "absolute", left: AREA.x, top: cy - 90, width: AREA.w, textAlign: "center", transform: `scale(${pop})` }}>
+        <div style={{ fontFamily: marker, fontWeight: 800, fontSize: 96, lineHeight: 1.0, color: palette.ink }}>{text}</div>
+        <svg width={w} height={28} style={{ overflow: "visible", marginTop: 6 }}>
+          <RoughShape shape={{ type: "line", x1: 8, y1: 14, x2: w - 8, y2: 14 }} seed={4} draw={ul} options={{ stroke: emphasis, strokeWidth: 10, roughness: 1.3, bowing: 2 }} />
+        </svg>
+      </div>
+      <svg width={1920} height={1080} style={{ position: "absolute", overflow: "visible" }}>
+        {[-1, 1].map((s, i) => (
+          <g key={i} transform={`translate(${cx + s * (w / 2 + 70)}, ${cy - 70}) scale(${marks})`}>
+            <RoughShape shape={{ type: "line", x1: 0, y1: 0, x2: s * 34, y2: -30 }} seed={20 + i} options={{ stroke: emphasis, strokeWidth: 9 }} />
+            <RoughShape shape={{ type: "line", x1: 6, y1: 22, x2: s * 40, y2: 10 }} seed={22 + i} options={{ stroke: emphasis, strokeWidth: 9 }} />
+          </g>
+        ))}
       </svg>
-    </div>
+    </>
   );
 };
 
@@ -75,13 +86,20 @@ const PropShot: React.FC<{ shot: Shot; f: number; emphasis: string }> = ({ shot,
 };
 
 const NumberShot: React.FC<{ shot: Shot; f: number; fps: number; emphasis: string }> = ({ shot, f, fps, emphasis }) => {
-  const pop = easeOutBack(reveal(f, 0, 8));
-  const count = Math.round(interpolate(spring({ frame: f, fps, config: { damping: 16 } }), [0, 1], [0, shot.value ?? 0]));
+  const pop = easeOutBack(reveal(f, 0, 8)); // 1: number pops
+  const count = Math.round(interpolate(spring({ frame: f, fps, config: { damping: 16 } }), [0, 1], [0, shot.value ?? 0])); // 2: counts up
+  const ul = reveal(f, 10, 26); // 3: underline draws on
+  const col = shot.color || emphasis;
   return (
-    <div style={{ position: "absolute", left: AREA.x, top: cy - 160, width: AREA.w, textAlign: "center", transform: `scale(${pop}) rotate(-3deg)` }}>
-      <div style={{ fontFamily: hand, fontWeight: 700, fontSize: 230, lineHeight: 0.9, color: shot.color || emphasis }}>{money(count)}</div>
-      {shot.label && <div style={{ fontFamily: hand, fontWeight: 700, fontSize: 70, color: palette.inkSoft, marginTop: -8 }}>{shot.label}</div>}
-    </div>
+    <>
+      <div style={{ position: "absolute", left: AREA.x, top: cy - 170, width: AREA.w, textAlign: "center", transform: `scale(${pop}) rotate(-3deg)` }}>
+        <div style={{ fontFamily: hand, fontWeight: 700, fontSize: 240, lineHeight: 0.9, color: col }}>{money(count)}</div>
+        {shot.label && <div style={{ fontFamily: hand, fontWeight: 700, fontSize: 74, color: palette.inkSoft, marginTop: -8 }}>{shot.label}</div>}
+      </div>
+      <svg width={1920} height={1080} style={{ position: "absolute", overflow: "visible" }}>
+        <RoughShape shape={{ type: "line", x1: cx - 230, y1: cy + 120, x2: cx + 230, y2: cy + 120 }} seed={8} draw={ul} options={{ stroke: col, strokeWidth: 12, roughness: 1.6, bowing: 2.5 }} />
+      </svg>
+    </>
   );
 };
 
@@ -112,6 +130,47 @@ const IconsShot: React.FC<{ shot: Shot; f: number; emphasis: string }> = ({ shot
         return (
           <g key={i} transform={`translate(${x}, ${cy}) scale(${1.9 * Math.max(0.001, pop)})`}>
             <g transform="translate(-130,-115)"><Prop name={ic as PropName} draw={pop} accent={i % 2 ? palette.red : emphasis} /></g>
+          </g>
+        );
+      })}
+    </svg>
+  );
+};
+
+// intro: credit card draws, $3,000 writes on, red X slashes — three animations
+const CardXShot: React.FC<{ f: number }> = ({ f }) => {
+  const pop = easeOutBack(reveal(f, 0, 10));
+  const draw = reveal(f, 0, 14);
+  const amt = reveal(f, 14, 22);
+  const s1 = reveal(f, 18, 30);
+  const s2 = reveal(f, 26, 38);
+  return (
+    <svg width={1920} height={1080} style={{ position: "absolute", overflow: "visible" }}>
+      <g transform={`translate(${cx}, ${cy}) scale(${2.1 * Math.max(0.001, pop)})`}>
+        <g transform="translate(-130,-100)">
+          <Prop name="credit-card" draw={draw} accent={palette.blue} />
+          <text x={130} y={214} textAnchor="middle" fontFamily={hand} fontWeight={700} fontSize={60} fill={palette.ink} opacity={amt}>$3,000</text>
+        </g>
+      </g>
+      <g transform={`translate(${cx}, ${cy})`}>
+        <RoughShape shape={{ type: "line", x1: -170, y1: -116, x2: 170, y2: 116 }} seed={3} draw={s1} options={{ stroke: palette.red, strokeWidth: 17, roughness: 1.6 }} />
+        <RoughShape shape={{ type: "line", x1: 170, y1: -116, x2: -170, y2: 116 }} seed={4} draw={s2} options={{ stroke: palette.red, strokeWidth: 17, roughness: 1.6 }} />
+      </g>
+    </svg>
+  );
+};
+
+// intro: consequence icons pop in one after another
+const TeaserShot: React.FC<{ f: number; emphasis: string }> = ({ f, emphasis }) => {
+  const icons: PropName[] = ["gavel", "bank", "hourglass", "prison"];
+  return (
+    <svg width={1920} height={1080} style={{ position: "absolute", overflow: "visible" }}>
+      {icons.map((ic, i) => {
+        const pop = easeOutBack(reveal(f, i * 5, i * 5 + 10));
+        const x = cx - 540 + i * 360;
+        return (
+          <g key={i} transform={`translate(${x}, ${cy}) scale(${1.7 * Math.max(0.001, pop)})`}>
+            <g transform="translate(-130,-115)"><Prop name={ic} draw={pop} accent={i % 2 ? palette.red : emphasis} /></g>
           </g>
         );
       })}
@@ -227,6 +286,8 @@ export const ShotStage: React.FC<{ scene: RenderScene; evidence: (Evidence & { i
       {active && active.kind === "icons" && <IconsShot shot={active} f={f} emphasis={emphasis} />}
       {active && active.kind === "stamp" && <StampShot shot={active} f={f} />}
       {active && active.kind === "bubble" && <BubbleShot shot={active} f={f} />}
+      {active && active.kind === "cardx" && <CardXShot f={f} />}
+      {active && active.kind === "teaser" && <TeaserShot f={f} emphasis={emphasis} />}
       {active && active.kind === "doc" && <DocShot shot={active} f={f} ev={ev} emphasis={emphasis} />}
     </AbsoluteFill>
   );

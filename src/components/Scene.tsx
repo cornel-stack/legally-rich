@@ -11,12 +11,12 @@ export const Scene: React.FC<{
   accent: string;
   seriesQuestion: string;
 }> = ({ scene, evidence, accent, seriesQuestion }) => {
-  if (scene.kind === "cold-open")
-    return <ColdOpen headline={scene.headline ?? "STOP PAYING?"} kicker={scene.subhead ?? seriesQuestion} accent={accent} />;
-
-  // fast-cut montage
+  // fast-cut montage (covers everything, including the intro)
   if (scene.shots && (scene.shots as unknown[]).length)
     return <ShotStage scene={scene} evidence={evidence} accent={accent} />;
+
+  if (scene.kind === "cold-open")
+    return <ColdOpen headline={scene.headline ?? "STOP PAYING?"} kicker={scene.subhead ?? seriesQuestion} accent={accent} />;
 
   if (scene.kind === "document") {
     const ev = evidence.find((e) => e.id === scene.document);
